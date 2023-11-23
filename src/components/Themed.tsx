@@ -4,11 +4,15 @@
  */
 
 import {
-  Text as DefaultText,
   useColorScheme,
+  Text as DefaultText,
   View as DefaultView,
 } from "react-native";
 
+import {
+  Link as DefaultLink,
+  LinkProps as DefaultLinkProps,
+} from "expo-router";
 import Colors from "src/constants/Colors";
 
 type ThemeProps = {
@@ -18,6 +22,7 @@ type ThemeProps = {
 
 export type TextProps = ThemeProps & DefaultText["props"];
 export type ViewProps = ThemeProps & DefaultView["props"];
+export type LinkProps = ThemeProps & DefaultLinkProps<any>;
 
 export function useThemeColor(
   props: { light?: string; dark?: string },
@@ -48,4 +53,11 @@ export function View(props: ViewProps) {
   );
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
+}
+
+export function Link(props: LinkProps) {
+  const { style, lightColor, darkColor, ...otherProps } = props;
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
+
+  return <DefaultLink style={[{ color }, style]} {...otherProps} />;
 }
