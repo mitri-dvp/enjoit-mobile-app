@@ -1,5 +1,5 @@
 import ScreenView from "src/components/ScreenView";
-import { Text } from "src/components/Themed";
+import { Text } from "tamagui";
 
 export default function TabOneScreen() {
   return (
