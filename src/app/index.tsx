@@ -8,7 +8,7 @@ import Icon from "@expo/vector-icons/EvilIcons";
 import { Button, Text, View } from "tamagui";
 
 import ScreenView from "src/components/ScreenView";
-import { Color } from "src/utils/color";
+import { darken, lighten } from "src/utils/color";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Root() {
@@ -138,8 +138,8 @@ const styles = StyleSheet.create({
     borderRadius: 9999,
   },
   email_button__press: {
-    backgroundColor: Color("#D30101").darken().toString(),
-    borderColor: Color("#D30101").darken().toString(),
+    backgroundColor: darken("#D30101"),
+    borderColor: darken("#D30101"),
   },
   facebook_button: {
     backgroundColor: "#3C5B9A",
@@ -147,8 +147,8 @@ const styles = StyleSheet.create({
     borderRadius: 9999,
   },
   facebook_button__press: {
-    backgroundColor: Color("#3C5B9A").darken().toString(),
-    borderColor: Color("#3C5B9A").darken().toString(),
+    backgroundColor: darken("#3C5B9A"),
+    borderColor: darken("#3C5B9A"),
   },
   google_button: {
     backgroundColor: "#FFFFFF",
@@ -156,8 +156,8 @@ const styles = StyleSheet.create({
     borderRadius: 9999,
   },
   google_button__press: {
-    backgroundColor: Color("#FFFFFF").darken().toString(),
-    borderColor: Color("#FFFFFF").darken().toString(),
+    backgroundColor: darken("#FFFFFF"),
+    borderColor: darken("#FFFFFF"),
   },
   apple_button: {
     backgroundColor: "#000000",
@@ -165,8 +165,8 @@ const styles = StyleSheet.create({
     borderRadius: 9999,
   },
   apple_button__press: {
-    backgroundColor: Color("#000000").lighten().toString(),
-    borderColor: Color("#000000").lighten().toString(),
+    backgroundColor: lighten("#000000"),
+    borderColor: lighten("#000000"),
   },
   button_icon: {
     width: 36,
