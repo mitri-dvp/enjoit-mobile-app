@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { ImageBackground, StyleSheet } from "react-native";
 
-import { useNavigation } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import { Image } from "expo-image";
 import Icon from "@expo/vector-icons/EvilIcons";
 
@@ -13,10 +13,15 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Root() {
   const navigation = useNavigation();
+  const router = useRouter();
 
   useEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
+
+  const handleSignup = () => {
+    router.push("/signup");
+  };
 
   return (
     <ImageBackground
@@ -24,7 +29,7 @@ export default function Root() {
       style={{ flex: 1 }}
       source={require("src/assets/images/enjoit/root-bg.jpg")}
     >
-      <ScreenView style={styles.screen}>
+      <ScreenView screenStyle={styles.screen}>
         <View style={styles.container}>
           <View style={styles.logo_container}>
             <Image
@@ -42,6 +47,7 @@ export default function Root() {
               <Button
                 {...styles.email_button}
                 pressStyle={styles.email_button__press}
+                onPress={handleSignup}
               >
                 <Icon
                   name="envelope"
@@ -49,7 +55,7 @@ export default function Root() {
                   style={styles.button_icon}
                   color={"#FFFFFF"}
                 />
-                <Text style={styles.button_text}>Ingresar con Email</Text>
+                <Text style={styles.button_text}>Ingresar con email</Text>
               </Button>
               <Button
                 {...styles.facebook_button}
@@ -94,7 +100,7 @@ export default function Root() {
               }}
             >
               <TouchableOpacity>
-                <Text style={styles.button_text}>Ingresa como Invitado</Text>
+                <Text style={styles.button_text}>Ingresa como invitado</Text>
               </TouchableOpacity>
               <TouchableOpacity>
                 <Text style={styles.button_text}>Ya tengo cuenta</Text>
@@ -115,7 +121,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: 8,
-    paddingHorizontal: 16,
+    paddingHorizontal: 32,
   },
 
   logo_container: {

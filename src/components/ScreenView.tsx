@@ -4,16 +4,17 @@ import {
   Platform,
   useColorScheme,
   StatusBar,
-  StyleProp,
   ViewStyle,
 } from "react-native";
 
 const ScreenView = ({
   children,
-  style,
+  screenStyle,
+  scrollViewStyle,
 }: {
   children: React.ReactNode;
-  style?: ViewStyle;
+  screenStyle?: ViewStyle;
+  scrollViewStyle?: ViewStyle;
 }) => {
   const colorScheme = useColorScheme();
 
@@ -26,10 +27,10 @@ const ScreenView = ({
           paddingTop: Platform.select({ android: StatusBar.currentHeight }),
           backgroundColor: bgColor,
         },
-        style,
+        screenStyle,
       ]}
     >
-      <ScrollView>{children}</ScrollView>
+      <ScrollView style={scrollViewStyle}>{children}</ScrollView>
     </SafeAreaView>
   );
 };
