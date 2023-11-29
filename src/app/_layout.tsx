@@ -8,7 +8,7 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack, useRouter } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 
 import { TamaguiProvider } from "tamagui";
 import tamaguiConfig from "src/tamagui.config";
@@ -22,8 +22,6 @@ export {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const router = useRouter();
-
   const [loaded, error] = useFonts({
     SpaceMono: require("src/assets/fonts/SpaceMono-Regular.ttf"),
     "RedHatText-Bold": require("src/assets/fonts/RedHatText/RedHatText-Bold.ttf"),

@@ -5,9 +5,10 @@ import { StyleSheet, Dimensions } from "react-native";
 import { useNavigation } from "expo-router";
 import { Image } from "expo-image";
 
-import { Text, View, Separator, Label, Input } from "tamagui";
+import { View } from "tamagui";
 
 import ScreenView from "src/components/ScreenView";
+import SignupForm from "src/components/SignupForm";
 
 export default function Root() {
   const navigation = useNavigation();
@@ -26,35 +27,7 @@ export default function Root() {
             style={{ width: 128, height: 128, borderRadius: 24 }}
           />
         </View>
-
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 12,
-          }}
-        >
-          <Image
-            source={require("src/assets/svg/user.svg")}
-            contentFit="contain"
-            style={{ width: 24, height: 24 }}
-          />
-          <Text style={styles.text}>Cuenta</Text>
-        </View>
-
-        <Separator style={{ marginTop: 20, borderColor: "#D8D8D8" }} />
-
-        <View>
-          <Label {...styles.label} style={styles.text} htmlFor="name">
-            Nickname
-          </Label>
-          <Input
-            {...styles.input}
-            style={[styles.text]}
-            id="name"
-            placeholder="Ingresa nickname"
-          />
-        </View>
+        <SignupForm />
       </View>
     </ScreenView>
   );
@@ -68,13 +41,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     minHeight: Dimensions.get("screen").height,
-    paddingVertical: 8,
+    paddingVertical: 64,
     paddingHorizontal: 32,
     backgroundColor: "#FFFFFF",
   },
 
   logo_container: {
-    paddingVertical: 64,
     justifyContent: "center",
     flexDirection: "row",
   },
