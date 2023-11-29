@@ -8,7 +8,7 @@ import { Image } from "expo-image";
 import { View } from "tamagui";
 
 import ScreenView from "src/components/ScreenView";
-import SignupForm from "src/components/SignupForm";
+import SignupForm from "src/components/Forms/SignupForm";
 
 export default function Root() {
   const navigation = useNavigation();

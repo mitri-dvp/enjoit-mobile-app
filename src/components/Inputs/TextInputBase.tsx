@@ -1,23 +1,15 @@
 import { Image } from "expo-image";
 import { useState } from "react";
-import {
-  TouchableWithoutFeedback,
-  StyleSheet,
-  View,
-  KeyboardTypeOptions,
-  NativeSyntheticEvent,
-  TextInputFocusEventData,
-} from "react-native";
-import { InputProps } from "tamagui";
+import { StyleSheet, View, KeyboardTypeOptions } from "react-native";
 import { Input, Text, Label, Button } from "tamagui";
+import { Controller } from "react-hook-form";
+import { FieldError } from "react-hook-form/dist/types";
 
 const TextInputBase = (props: {
   labelText: string;
   inputId: string;
   inputPlaceholder: string;
-  value?: string;
-  onChangeText?: (text: string) => void;
-  onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+  control: any;
   inputKeyboardType?: KeyboardTypeOptions;
   captionText?: string;
   error?: string;
@@ -53,35 +45,45 @@ const TextInputBase = (props: {
     return <Text style={styles.text}>{props.captionText}</Text>;
   };
 
-  const TextInputError = () => {
-    return <Text style={[styles.text, styles.text__error]}>{props.error}</Text>;
+  const TextInputError = ({ error }: { error: FieldError }) => {
+    return (
+      <Text style={[styles.text, styles.text__error]}>{error.message}</Text>
+    );
   };
 
   return (
-    <View>
-      <TextInputLabel />
-      <View>
-        <Input
-          {...styles.input}
-          id={props.inputId}
-          style={{
-            ...{ ...styles.text, ...(props.error && styles.input__error) },
-          }}
-          value={props.value}
-          onChangeText={props.onChangeText}
-          onBlur={props.onBlur}
-          placeholder={props.inputPlaceholder}
-          secureTextEntry={props.secureText && secureTextEntry}
-          keyboardType={props.inputKeyboardType}
-        />
-        {props.secureText && <TextInputIcon />}
-      </View>
-      {props.captionText && <TextInputCaption />}
-      {props.error && <TextInputError />}
-    </View>
+    <Controller
+      control={props.control}
+      name={props.inputId}
+      render={({
+        field: { value, onChange, onBlur },
+        fieldState: { error },
+      }) => (
+        <>
+          <TextInputLabel />
+          <View>
+            <Input
+              {...styles.input}
+              id={props.inputId}
+              style={{
+                ...{ ...styles.text, ...(props.error && styles.input__error) },
+              }}
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              placeholder={props.inputPlaceholder}
+              secureTextEntry={props.secureText && secureTextEntry}
+              keyboardType={props.inputKeyboardType}
+            />
+            {props.secureText && <TextInputIcon />}
+          </View>
+          {props.captionText && <TextInputCaption />}
+          {error && <TextInputError error={error} />}
+        </>
+      )}
+    />
   );
 };
-
 export default TextInputBase;
 
 const styles = StyleSheet.create({
