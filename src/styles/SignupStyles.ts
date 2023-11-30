@@ -36,9 +36,17 @@ export const styles = StyleSheet.create({
     backgroundColor: darken("#D30101"),
     borderColor: darken("#D30101"),
   },
+  submit_button__disabled: {
+    backgroundColor: "#F0F0F0",
+    borderColor: "#F0F0F0",
+  },
   button_text: {
     fontFamily: "RedHatText-SemiBold",
     color: "#FFFFFF",
+  },
+  button_text__disabled: {
+    fontFamily: "RedHatText-SemiBold",
+    color: "#BCBCBC",
   },
   button_text__dark: {
     fontFamily: "RedHatText-SemiBold",

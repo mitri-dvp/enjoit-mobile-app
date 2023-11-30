@@ -15,13 +15,16 @@ import TextInputBase from "src/components/Inputs/TextInputBase";
 import PhoneInputBase from "src/components/Inputs/PhoneInputBase";
 
 export default function SignupForm() {
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, getValues, formState } = useForm({
     defaultValues: SignupValues,
     resolver: SignupSchema,
     mode: "all",
   });
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const onSubmit = handleSubmit((data) => {
+    // Store Data Locally
+    console.log(data);
+  });
 
   return (
     <View>
@@ -39,14 +42,14 @@ export default function SignupForm() {
 
       <TextInputBase
         labelText={"Nickname"}
-        inputId={"nickname"}
+        inputId="nickname"
         placeholder={"Ingresa nickname"}
         control={control}
       />
 
       <TextInputBase
         labelText={"Email"}
-        inputId={"email"}
+        inputId="email"
         placeholder={"Ingresa email"}
         control={control}
         inputKeyboardType="email-address"
@@ -54,7 +57,7 @@ export default function SignupForm() {
 
       <TextInputBase
         labelText={"Contraseña"}
-        inputId={"password"}
+        inputId="password"
         placeholder={"Ingresa contraseña"}
         control={control}
         secureText
@@ -62,7 +65,7 @@ export default function SignupForm() {
 
       <TextInputBase
         labelText={"Confirmar contraseña"}
-        inputId={"confirmPassword"}
+        inputId="confirmPassword"
         placeholder={"Confirma contraseña"}
         control={control}
         secureText
@@ -82,14 +85,14 @@ export default function SignupForm() {
 
       <TextInputBase
         labelText={"Nombre"}
-        inputId={"name"}
+        inputId="name"
         placeholder={"Ingresa nombre"}
         control={control}
       />
 
       <TextInputBase
         labelText={"Apellido"}
-        inputId={"lastName"}
+        inputId="lastName"
         placeholder={"Ingresa apellido"}
         control={control}
       />
@@ -133,12 +136,51 @@ export default function SignupForm() {
         <Separator style={{ borderColor: "#D8D8D8" }} />
       </View>
 
+      <SelectInputBase
+        inputId="country"
+        labelText="País de origen"
+        placeholder="Selecciona país"
+        control={control}
+        items={[{ name: "Colombia", value: "colombia" }]}
+      />
+
+      <SelectInputBase
+        inputId="state"
+        labelText="Estado"
+        placeholder="Selecciona estado"
+        control={control}
+        items={[{ name: "Atlantico", value: "atlantico" }]}
+      />
+
+      <SelectInputBase
+        inputId="city"
+        labelText="Ciudad"
+        placeholder="Selecciona ciudad"
+        control={control}
+        items={[{ name: "Barranquilla", value: "barranquilla" }]}
+      />
+
+      <TextInputBase
+        inputId="zipCode"
+        labelText={"Código Postal (opcional)"}
+        placeholder={"Ingresa código postal "}
+        control={control}
+      />
+
       <Button
         {...styles.submit_button}
         pressStyle={styles.submit_button__press}
+        style={[!formState.isValid && styles.submit_button__disabled]}
         onPress={() => onSubmit()}
       >
-        <Text style={styles.button_text}>Registrarme</Text>
+        <Text
+          style={[
+            styles.button_text,
+            !formState.isValid && styles.button_text__disabled,
+          ]}
+        >
+          Registrarme
+        </Text>
       </Button>
 
       <View

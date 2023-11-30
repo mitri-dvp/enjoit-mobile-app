@@ -34,6 +34,10 @@ export const SignupSchema = zodResolver(
       phone: z.string().refine((value) => isValidPhoneNumber(value), {
         message: "Ingrese un teléfono válido",
       }),
+      country: z.string().min(1, { message: "Por favor seleccione país" }),
+      state: z.string().min(1, { message: "Por favor seleccione estado" }),
+      city: z.string().min(1, { message: "Por favor seleccione ciudad" }),
+      // zipCode: z.string().min(1, { message: "Por favor seleccione código postal" }),
     })
     .superRefine(({ confirmPassword, password }, ctx) => {
       if (confirmPassword !== password) {
@@ -56,4 +60,8 @@ export const SignupValues = {
   gender: "",
   dateOfBirth: undefined,
   phone: "",
+  country: "",
+  state: "",
+  city: "",
+  zipCode: "",
 };

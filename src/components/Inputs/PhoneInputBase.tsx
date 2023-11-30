@@ -4,6 +4,7 @@ import { StyleSheet, View, KeyboardTypeOptions } from "react-native";
 import { Input, Text, Label, Button } from "tamagui";
 import { Controller } from "react-hook-form";
 import { Control, FieldError } from "react-hook-form/dist/types";
+import { isValidPhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 
 const TextInputBase = (props: {
   labelText: string;
@@ -61,6 +62,14 @@ const TextInputBase = (props: {
         field: { value, onChange, onBlur },
         fieldState: { error, isTouched },
       }) => {
+        useEffect(() => {
+          if (isValidPhoneNumber(value)) {
+            let parsedPhoneNumber = parsePhoneNumber(value);
+            setCountryCode("+" + parsedPhoneNumber.countryCallingCode);
+            setPhoneNumber(parsedPhoneNumber.nationalNumber);
+          }
+        }, []);
+
         const handleChange = (value: string, type: string) => {
           const countryCodeValue = type === "countryCode" ? value : countryCode;
           const phoneNumberValue = type === "phoneNumber" ? value : phoneNumber;

@@ -57,7 +57,10 @@ const SelectInputBase = (props: {
       }) => (
         <>
           <SelectInputLabel />
-          <Select onValueChange={(value) => onChange(value)}>
+          <Select
+            onValueChange={(value) => onChange(value)}
+            defaultValue={value}
+          >
             <Select.Trigger
               style={{
                 ...{ ...styles.input, ...(error && styles.input__error) },
