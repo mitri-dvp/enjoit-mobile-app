@@ -2,15 +2,21 @@ import { StyleSheet } from "react-native";
 
 import { Image } from "expo-image";
 
-import { Text, View, Separator, Label, Input } from "tamagui";
+import { Text, View, Separator, Label, Input, Button } from "tamagui";
 
-import SelectBase from "src/components/Inputs/SelectBase";
-import DateTimePickerBase from "src/components/Inputs/DateTimePickerBase";
+import SelectInputBase from "src/components/Inputs/SelectBase";
+import DateTimeInputBase from "src/components/Inputs/DateTimePickerBase";
 import TextInputBase from "src/components/Inputs/TextInputBase";
+import PhoneInputBase from "src/components/Inputs/PhoneInputBase";
 
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isValidPhoneNumber } from "libphonenumber-js";
+
+import dayjs from "src/utils/dayjs";
+import { darken } from "src/utils/color";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const SignupSchema = z
   .object({
@@ -25,6 +31,22 @@ const SignupSchema = z
       .min(1, { message: "Por favor ingresa contraseña" }),
     name: z.string().min(1, { message: "Por favor ingresa nombre" }),
     lastName: z.string().min(1, { message: "Por favor ingresa apellido" }),
+    gender: z.string().min(1, { message: "Por favor seleccione genero" }),
+    dateOfBirth: z
+      .date({
+        errorMap: (issue, ctx) => {
+          return { message: "Ingrese una fecha válida" };
+        },
+      })
+      .min(dayjs().subtract(85, "years").toDate(), {
+        message: "Muy mayor para registrarse",
+      })
+      .max(dayjs().subtract(3, "years").toDate(), {
+        message: "Muy jóven para registrarse",
+      }),
+    phone: z.string().refine((value) => isValidPhoneNumber(value), {
+      message: "Ingrese un teléfono válido",
+    }),
   })
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {
@@ -43,10 +65,14 @@ const defaultValues = {
   confirmPassword: "",
   name: "",
   lastName: "",
+  gender: "",
+  dateOfBirth: undefined,
+  phone: "",
 };
 
 export default function SignupForm() {
   const {
+    getValues,
     control,
     handleSubmit,
     formState: { errors },
@@ -75,35 +101,31 @@ export default function SignupForm() {
       <TextInputBase
         labelText={"Nickname"}
         inputId={"nickname"}
-        inputPlaceholder={"Ingresa nickname"}
+        placeholder={"Ingresa nickname"}
         control={control}
-        error={errors.nickname?.message}
       />
 
       <TextInputBase
         labelText={"Email"}
         inputId={"email"}
-        inputPlaceholder={"Ingresa email"}
+        placeholder={"Ingresa email"}
         control={control}
-        error={errors.email?.message}
         inputKeyboardType="email-address"
       />
 
       <TextInputBase
         labelText={"Contraseña"}
         inputId={"password"}
-        inputPlaceholder={"Ingresa contraseña"}
+        placeholder={"Ingresa contraseña"}
         control={control}
-        error={errors.password?.message}
         secureText
       />
 
       <TextInputBase
         labelText={"Confirmar contraseña"}
         inputId={"confirmPassword"}
-        inputPlaceholder={"Confirma contraseña"}
+        placeholder={"Confirma contraseña"}
         control={control}
-        error={errors.confirmPassword?.message}
         secureText
       />
 
@@ -122,60 +144,43 @@ export default function SignupForm() {
       <TextInputBase
         labelText={"Nombre"}
         inputId={"name"}
-        inputPlaceholder={"Ingresa nombre"}
+        placeholder={"Ingresa nombre"}
         control={control}
-        error={errors.name?.message}
       />
 
       <TextInputBase
         labelText={"Apellido"}
         inputId={"lastName"}
-        inputPlaceholder={"Ingresa apellido"}
+        placeholder={"Ingresa apellido"}
         control={control}
-        error={errors.lastName?.message}
       />
 
-      <View>
-        <Label {...styles.label} style={styles.text} htmlFor="name">
-          Genero
-        </Label>
-        <SelectBase
-          triggerStyle={styles.input}
-          textStyle={styles.text}
-          placeholder="Selecciona genero"
-          items={[
-            { name: "Masculino", value: "male" },
-            { name: "Femenino", value: "female" },
-            { name: "Prefiero no decirlo", value: "n/a" },
-          ]}
-        />
-      </View>
+      <SelectInputBase
+        inputId="gender"
+        labelText="Genero"
+        placeholder="Selecciona genero"
+        control={control}
+        items={[
+          { name: "Masculino", value: "male" },
+          { name: "Femenino", value: "female" },
+          { name: "Prefiero no decirlo", value: "n/a" },
+        ]}
+      />
 
-      <View>
-        <Label {...styles.label} style={styles.text} htmlFor="name">
-          Fecha de nacimiento
-        </Label>
-        <DateTimePickerBase
-          triggerStyle={styles.input}
-          textStyle={styles.text}
-          type="date"
-          accentColor={"#D30101"}
-          textColor={"#D30101"}
-          placeholder="Seleccionar fecha"
-        />
-      </View>
+      <DateTimeInputBase
+        inputId="dateOfBirth"
+        labelText="Fecha de nacimiento"
+        placeholder="Seleccionar fecha"
+        control={control}
+        type="date"
+      />
 
-      <View>
-        <Label {...styles.label} style={styles.text} htmlFor="phone">
-          Teléfono
-        </Label>
-        <Input
-          {...styles.input}
-          style={[styles.text]}
-          id="phone"
-          placeholder="Ingresa teléfono"
-        />
-      </View>
+      <PhoneInputBase
+        inputId="phone"
+        labelText="Teléfono"
+        control={control}
+        placeholder="Ingresa teléfono"
+      />
 
       <View>
         <View style={styles.separator_container}>
@@ -189,7 +194,24 @@ export default function SignupForm() {
         <Separator style={{ borderColor: "#D8D8D8" }} />
       </View>
 
-      {/* <Button onPress={() => handleSubmit()} /> */}
+      <Button
+        {...styles.submit_button}
+        pressStyle={styles.submit_button__press}
+        onPress={() => onSubmit()}
+      >
+        <Text style={styles.button_text}>Registrarme</Text>
+      </Button>
+
+      <View
+        style={{
+          marginTop: 32,
+          alignItems: "center",
+        }}
+      >
+        <TouchableOpacity>
+          <Text style={styles.button_text__dark}>¿Ya tienes una cuenta?</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -215,5 +237,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 12,
     marginVertical: 20,
+  },
+
+  submit_button: {
+    backgroundColor: "#D30101",
+    borderColor: "#D30101",
+    borderRadius: 9999,
+    alignSelf: "center",
+    paddingHorizontal: 32,
+    marginTop: 32,
+  },
+  submit_button__press: {
+    backgroundColor: darken("#D30101"),
+    borderColor: darken("#D30101"),
+  },
+  button_text: {
+    fontFamily: "RedHatText-SemiBold",
+    color: "#FFFFFF",
+  },
+  button_text__dark: {
+    fontFamily: "RedHatText-SemiBold",
+    color: "#D30101",
   },
 });

@@ -1,93 +1,134 @@
 import { useEffect, useState } from "react";
-import { Pressable, TextStyle, StyleProp } from "react-native";
+import { Pressable, TextStyle, StyleProp, StyleSheet } from "react-native";
 
-import { Input, Button } from "tamagui";
-import DateTimePickerModal from "react-native-modal-datetime-picker"; // https://github.com/mmazzarolo/react-native-modal-datetime-picker
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { Image } from "expo-image";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import DateTimePickerModal from "react-native-modal-datetime-picker"; // https://github.com/mmazzarolo/react-native-modal-datetime-picker
 
-const DateTimePickerBase = (props: {
+import { Input, Button, Label, Text } from "tamagui";
+import { Controller } from "react-hook-form";
+import { Control, FieldError } from "react-hook-form/dist/types";
+
+import dayjs from "src/utils/dayjs";
+
+const DateTimeInputBase = (props: {
   date?: Date;
   type: "date" | "time";
-  triggerStyle?: StyleProp<any>;
-  textStyle?: TextStyle;
+  labelText: string;
+  inputId: string;
+  control: Control<any>;
   placeholder?: string;
   confirmText?: string;
   cancelText?: string;
-  accentColor?: string;
-  textColor?: string;
   buttonTextColorIOS?: string;
-  onChange?: (date: Date) => void;
-  onConfirm?: (date: Date) => void;
 }) => {
   const [show, setShow] = useState(false);
-  const [date, setDate] = useState(props.date);
 
   const getDateValue = (date: Date) => {
     if (type === "date") return date.toLocaleDateString();
     if (type === "time") return date.toLocaleTimeString();
   };
 
-  useEffect(() => {
-    setDate(props.date);
-  }, [props.date]);
-
   const hideDatePicker = () => {
     setShow(false);
   };
 
-  const handleConfirm = (date: Date) => {
-    setDate(date);
-    props.onConfirm && props.onConfirm(date);
-    hideDatePicker();
-  };
-
   const type = props.type || "date";
 
-  return (
-    <>
-      <Pressable onPress={() => setShow(true)}>
-        <Input
-          {...props.triggerStyle}
-          style={props.textStyle}
-          value={date && getDateValue(date)}
-          placeholder={props.placeholder}
-          editable={false}
-        />
-        <Button
-          style={{
-            position: "absolute",
-            right: 0,
-            bottom: 0,
-            backgroundColor: "transparent",
-            borderColor: "transparent",
-          }}
-        >
-          <Image
-            source={require("src/assets/svg/calendar.svg")}
-            contentFit="contain"
-            style={{ width: 24, height: 24 }}
-          />
-        </Button>
-      </Pressable>
+  const DateTimeInputLabel = (): React.ReactElement => (
+    <Label {...styles.label} style={styles.text} htmlFor={props.inputId}>
+      {props.labelText}
+    </Label>
+  );
 
-      <DateTimePickerModal
-        cancelTextIOS={props.cancelText}
-        confirmTextIOS={props.confirmText}
-        date={date}
-        isVisible={show}
-        mode={type}
-        // display="inline"
-        accentColor={props.accentColor}
-        textColor={props.textColor}
-        buttonTextColorIOS={props.buttonTextColorIOS}
-        onChange={props.onChange}
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-      />
-    </>
+  const DateTimeInputError = ({ error }: { error: FieldError }) => {
+    return (
+      <Text style={[styles.text, styles.text__error]}>{error.message}</Text>
+    );
+  };
+
+  return (
+    <Controller
+      control={props.control}
+      name={props.inputId}
+      render={({
+        field: { value, onChange, onBlur },
+        fieldState: { error },
+      }) => (
+        <>
+          <DateTimeInputLabel />
+          <Pressable onPress={() => setShow(true)}>
+            <Input
+              {...styles.input}
+              style={{
+                ...{ ...styles.text, ...(error && styles.input__error) },
+              }}
+              value={value ? getDateValue(value) : ""}
+              placeholder={props.placeholder}
+              editable={false}
+            />
+            <Button style={styles.icon_button} onPress={() => setShow(true)}>
+              <Image
+                source={require("src/assets/svg/calendar.svg")}
+                contentFit="contain"
+                style={{ width: 24, height: 24 }}
+              />
+            </Button>
+          </Pressable>
+
+          <DateTimePickerModal
+            cancelTextIOS={props.cancelText}
+            confirmTextIOS={props.confirmText}
+            date={value}
+            isVisible={show}
+            mode={type}
+            minimumDate={dayjs().subtract(85, "years").toDate()}
+            maximumDate={dayjs().subtract(3, "years").toDate()}
+            // display="inline"
+            buttonTextColorIOS={props.buttonTextColorIOS}
+            onConfirm={(date: Date) => {
+              onChange(date);
+              hideDatePicker();
+            }}
+            onCancel={hideDatePicker}
+          />
+
+          {error && <DateTimeInputError error={error} />}
+        </>
+      )}
+    />
   );
 };
 
-export default DateTimePickerBase;
+export default DateTimeInputBase;
+
+const styles = StyleSheet.create({
+  text: {
+    fontFamily: "RedHatText-SemiBold",
+    color: "#666666",
+  },
+
+  text__error: {
+    color: "#D30101",
+  },
+
+  label: {
+    marginVertical: 8,
+  },
+
+  input: {
+    borderColor: "#8B8B8B",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 4,
+  },
+
+  input__error: {
+    borderColor: "#D30101",
+  },
+
+  icon_button: {
+    position: "absolute",
+    right: 0,
+    backgroundColor: "transparent",
+    borderColor: "transparent",
+  },
+});

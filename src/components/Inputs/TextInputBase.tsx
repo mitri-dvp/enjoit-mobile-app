@@ -3,16 +3,15 @@ import { useState } from "react";
 import { StyleSheet, View, KeyboardTypeOptions } from "react-native";
 import { Input, Text, Label, Button } from "tamagui";
 import { Controller } from "react-hook-form";
-import { FieldError } from "react-hook-form/dist/types";
+import { Control, FieldError } from "react-hook-form/dist/types";
 
 const TextInputBase = (props: {
   labelText: string;
   inputId: string;
-  inputPlaceholder: string;
-  control: any;
+  placeholder: string;
+  control: Control<any>;
   inputKeyboardType?: KeyboardTypeOptions;
   captionText?: string;
-  error?: string;
   secureText?: boolean;
 }) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -66,12 +65,12 @@ const TextInputBase = (props: {
               {...styles.input}
               id={props.inputId}
               style={{
-                ...{ ...styles.text, ...(props.error && styles.input__error) },
+                ...{ ...styles.text, ...(error && styles.input__error) },
               }}
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
-              placeholder={props.inputPlaceholder}
+              placeholder={props.placeholder}
               secureTextEntry={props.secureText && secureTextEntry}
               keyboardType={props.inputKeyboardType}
             />
@@ -84,6 +83,7 @@ const TextInputBase = (props: {
     />
   );
 };
+
 export default TextInputBase;
 
 const styles = StyleSheet.create({
