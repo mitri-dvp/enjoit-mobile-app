@@ -19,7 +19,7 @@ import {
 
 import ScreenView from "src/components/ScreenView";
 import SheetBase from "src/components/Sheets/SheetBase";
-import TermsSheet from "src/components/Sheets/TermsSheet";
+import TermsForm from "src/components/Forms/TermsForm";
 import { darken, lighten } from "src/utils/color";
 
 export default function Root() {
@@ -128,7 +128,7 @@ export default function Root() {
         </View>
 
         <SheetBase open={open} setOpen={setOpen}>
-          <TermsSheet onSubmit={handleSubmit} />
+          <TermsForm onSubmit={handleSubmit} />
         </SheetBase>
       </ScreenView>
     </ImageBackground>
