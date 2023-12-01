@@ -1,25 +1,43 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ImageBackground, StyleSheet } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 import { useNavigation, useRouter } from "expo-router";
 import { Image } from "expo-image";
 import Icon from "@expo/vector-icons/EvilIcons";
 
-import { Button, Text, View } from "tamagui";
+import {
+  Button,
+  Checkbox,
+  Label,
+  Separator,
+  Text,
+  View,
+  XStack,
+  YStack,
+} from "tamagui";
 
 import ScreenView from "src/components/ScreenView";
+import SheetBase from "src/components/Sheets/SheetBase";
+import TermsSheet from "src/components/Sheets/TermsSheet";
 import { darken, lighten } from "src/utils/color";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Root() {
   const navigation = useNavigation();
   const router = useRouter();
 
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
 
-  const handleSignup = () => {
+  const handleEmailPress = () => {
+    setOpen(true);
+  };
+
+  const handleSubmit = () => {
+    setOpen(false);
     router.push("/signup");
   };
 
@@ -47,7 +65,7 @@ export default function Root() {
               <Button
                 {...styles.email_button}
                 pressStyle={styles.email_button__press}
-                onPress={handleSignup}
+                onPress={handleEmailPress}
               >
                 <Icon
                   name="envelope"
@@ -108,6 +126,10 @@ export default function Root() {
             </View>
           </View>
         </View>
+
+        <SheetBase open={open} setOpen={setOpen}>
+          <TermsSheet onSubmit={handleSubmit} />
+        </SheetBase>
       </ScreenView>
     </ImageBackground>
   );

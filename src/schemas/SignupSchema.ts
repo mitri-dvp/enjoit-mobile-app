@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { isValidPhoneNumber } from "libphonenumber-js";
 import dayjs from "src/utils/dayjs";
 
+import { useUserStore } from "src/store/userStore";
+
 export const SignupSchema = zodResolver(
   z
     .object({
@@ -37,7 +39,7 @@ export const SignupSchema = zodResolver(
       country: z.string().min(1, { message: "Por favor seleccione país" }),
       state: z.string().min(1, { message: "Por favor seleccione estado" }),
       city: z.string().min(1, { message: "Por favor seleccione ciudad" }),
-      // zipCode: z.string().min(1, { message: "Por favor seleccione código postal" }),
+      zipCode: z.string(),
     })
     .superRefine(({ confirmPassword, password }, ctx) => {
       if (confirmPassword !== password) {
@@ -50,18 +52,34 @@ export const SignupSchema = zodResolver(
     })
 );
 
-export const SignupValues = {
-  nickname: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
-  name: "",
-  lastName: "",
-  gender: "",
-  dateOfBirth: undefined,
-  phone: "",
-  country: "",
-  state: "",
-  city: "",
-  zipCode: "",
+type SignupValuesType = {
+  nickname: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  name: string;
+  lastName: string;
+  gender: string;
+  dateOfBirth: Date | undefined;
+  phone: string;
+  country: string;
+  state: string;
+  city: string;
+  zipCode: string;
+};
+
+export const SignupValues: SignupValuesType = {
+  nickname: useUserStore.getState().nickname,
+  email: useUserStore.getState().email,
+  password: useUserStore.getState().password,
+  confirmPassword: useUserStore.getState().confirmPassword,
+  name: useUserStore.getState().name,
+  lastName: useUserStore.getState().lastName,
+  gender: useUserStore.getState().gender,
+  dateOfBirth: useUserStore.getState().dateOfBirth,
+  phone: useUserStore.getState().phone,
+  country: useUserStore.getState().country,
+  state: useUserStore.getState().state,
+  city: useUserStore.getState().city,
+  zipCode: useUserStore.getState().zipCode,
 };

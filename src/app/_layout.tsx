@@ -36,6 +36,12 @@ export default function RootLayout() {
     "RedHatText-SemiBold": require("src/assets/fonts/RedHatText/RedHatText-SemiBold.ttf"),
     "RedHatText-SemiBoldItalic": require("src/assets/fonts/RedHatText/RedHatText-SemiBoldItalic.ttf"),
     "RedHatText-VariableFont_wght": require("src/assets/fonts/RedHatText/RedHatText-VariableFont_wght.ttf"),
+
+    "Rajdhani-Bold": require("src/assets/fonts/Rajdhani/Rajdhani-Bold.ttf"),
+    "Rajdhani-Light": require("src/assets/fonts/Rajdhani/Rajdhani-Light.ttf"),
+    "Rajdhani-Medium": require("src/assets/fonts/Rajdhani/Rajdhani-Medium.ttf"),
+    "Rajdhani-Regular": require("src/assets/fonts/Rajdhani/Rajdhani-Regular.ttf"),
+    "Rajdhani-SemiBold": require("src/assets/fonts/Rajdhani/Rajdhani-SemiBold.ttf"),
     ...FontAwesome.font,
   });
 

@@ -84,6 +84,11 @@ const SelectInputBase = (props: {
 
             <Adapt>
               <Sheet modal dismissOnSnapToBottom snapPointsMode="fit">
+                <Sheet.Overlay
+                  animation="quick"
+                  enterStyle={{ opacity: 0 }}
+                  exitStyle={{ opacity: 0 }}
+                />
                 <Sheet.Frame>
                   <Sheet.ScrollView
                     maxHeight={Dimensions.get("window").height * 0.75}
@@ -91,11 +96,6 @@ const SelectInputBase = (props: {
                     <Adapt.Contents />
                   </Sheet.ScrollView>
                 </Sheet.Frame>
-                <Sheet.Overlay
-                  animation="quick"
-                  enterStyle={{ opacity: 0 }}
-                  exitStyle={{ opacity: 0 }}
-                />
               </Sheet>
             </Adapt>
 

@@ -7,12 +7,15 @@ import { useForm } from "react-hook-form";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 import { styles } from "src/styles/SignupStyles";
+
 import { SignupSchema, SignupValues } from "src/schemas/SignupSchema";
 
 import SelectInputBase from "src/components/Inputs/SelectBase";
 import DateTimeInputBase from "src/components/Inputs/DateTimePickerBase";
 import TextInputBase from "src/components/Inputs/TextInputBase";
 import PhoneInputBase from "src/components/Inputs/PhoneInputBase";
+
+import { useUserStore } from "src/store/userStore";
 
 export default function SignupForm() {
   const { control, handleSubmit, getValues, formState } = useForm({
@@ -21,9 +24,10 @@ export default function SignupForm() {
     mode: "all",
   });
 
+  const userStore = useUserStore();
+
   const onSubmit = handleSubmit((data) => {
-    // Store Data Locally
-    console.log(data);
+    userStore.signup(data);
   });
 
   return (
