@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 
 import {
   Button,
@@ -14,7 +14,13 @@ import {
 import { useForm } from "react-hook-form";
 
 import CheckboxInputBase from "src/components/Inputs/CheckboxInputBase";
+
+import SheetBase from "src/components/Sheets/SheetBase";
+import TermsSheet from "src/components/Sheets/TermsSheet";
+import DataTreatmentSheet from "src/components/Sheets/DataTreatmentSheet";
+
 import { TermsSchema, TermsValues } from "src/schemas/TermsSchema";
+
 import { styles } from "src/styles/TermsStyles";
 
 export default function TermsForm(props: { onSubmit: (data: any) => void }) {
@@ -27,6 +33,18 @@ export default function TermsForm(props: { onSubmit: (data: any) => void }) {
   const onSubmit = handleSubmit((data) => {
     props.onSubmit(data);
   });
+
+  const [showTermsSheet, setShowTermsSheet] = useState(false);
+  const [showDataTreatmentSheet, setShowDataTreatmentSheet] = useState(false);
+
+  const toggleTermsSheet = () => {
+    setShowTermsSheet(!showTermsSheet);
+    // router.push("/modals/test-modal");
+  };
+  const toggleDataTreatmentSheet = () => {
+    setShowDataTreatmentSheet(!showDataTreatmentSheet);
+    // router.push("/modals/test-modal");
+  };
 
   return (
     <View
@@ -60,6 +78,7 @@ export default function TermsForm(props: { onSubmit: (data: any) => void }) {
                   fontFamily: "Rajdhani-SemiBold",
                   color: "#D30101",
                 }}
+                onPress={toggleTermsSheet}
               >
                 terminos y condiciones de Enjoit
               </Text>
@@ -77,6 +96,7 @@ export default function TermsForm(props: { onSubmit: (data: any) => void }) {
                   fontFamily: "Rajdhani-SemiBold",
                   color: "#D30101",
                 }}
+                onPress={toggleDataTreatmentSheet}
               >
                 tratamiento de datos de Enjoit
               </Text>
@@ -99,6 +119,15 @@ export default function TermsForm(props: { onSubmit: (data: any) => void }) {
           Acepto términos y condiciones
         </Text>
       </Button>
+      <SheetBase open={showTermsSheet} setOpen={setShowTermsSheet}>
+        <TermsSheet onBack={toggleTermsSheet} />
+      </SheetBase>
+      <SheetBase
+        open={showDataTreatmentSheet}
+        setOpen={setShowDataTreatmentSheet}
+      >
+        <DataTreatmentSheet onBack={toggleDataTreatmentSheet} />
+      </SheetBase>
     </View>
   );
 }
