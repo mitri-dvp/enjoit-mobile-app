@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { ImageBackground, StyleSheet } from "react-native";
+import { Alert, ImageBackground, StyleSheet, Platform } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
+import Icon from "@expo/vector-icons/EvilIcons";
 import { useNavigation, useRouter } from "expo-router";
 import { Image } from "expo-image";
-import Icon from "@expo/vector-icons/EvilIcons";
+import * as Location from "expo-location";
+import * as Notifications from "expo-notifications";
+import Constants from "expo-constants";
 
 import {
   Button,
@@ -20,7 +23,13 @@ import {
 import ScreenView from "src/components/ScreenView";
 import SheetBase from "src/components/Sheets/SheetBase";
 import TermsForm from "src/components/Forms/TermsForm";
+
 import { darken, lighten } from "src/utils/color";
+import {
+  allowedNotificationsAsync,
+  sendNotificationsAsync,
+} from "src/utils/notifications";
+import { allowedLocationAsync } from "src/utils/location";
 
 export default function Root() {
   const navigation = useNavigation();
@@ -36,8 +45,12 @@ export default function Root() {
     setOpen(true);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setOpen(false);
+
+    if (!(await allowedLocationAsync())) return;
+    if (!(await allowedNotificationsAsync())) return;
+
     router.push("/signup");
   };
 
