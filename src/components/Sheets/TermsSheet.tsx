@@ -1,4 +1,5 @@
 import { Image } from "expo-image";
+import { styles } from "src/styles/TermsStyles";
 
 import {
   Button,
@@ -11,7 +12,7 @@ import {
   YStack,
 } from "tamagui";
 
-const TermsSheet = (props: { onBack: () => void }) => {
+const TermsSheet = (props: { onBack: () => void; onConfirm: () => void }) => {
   return (
     <View
       style={{
@@ -29,7 +30,6 @@ const TermsSheet = (props: { onBack: () => void }) => {
       <Text
         style={{
           alignSelf: "center",
-          marginBottom: 16,
           fontSize: 16,
           fontFamily: "Rajdhani-SemiBold",
           paddingVertical: 10,
@@ -38,7 +38,7 @@ const TermsSheet = (props: { onBack: () => void }) => {
       >
         Términos y Condiciones
       </Text>
-      <View style={{ gap: 16 }}>
+      <View style={{ gap: 16, marginVertical: 16 }}>
         <Text>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi quas
           alias explicabo quod exercitationem commodi, soluta rem voluptates
@@ -64,6 +64,14 @@ const TermsSheet = (props: { onBack: () => void }) => {
           ab perspiciatis. Unde.
         </Text>
       </View>
+      <Button
+        {...styles.submit_button}
+        width={"100%"}
+        pressStyle={styles.submit_button__press}
+        onPress={() => props.onConfirm()}
+      >
+        <Text style={[styles.button_text]}>Aceptar</Text>
+      </Button>
     </View>
   );
 };

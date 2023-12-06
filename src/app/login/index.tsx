@@ -8,9 +8,9 @@ import { Image } from "expo-image";
 import { View } from "tamagui";
 
 import ScreenView from "src/components/ScreenView";
-import SignupForm from "src/components/Forms/SignupForm";
+import LoginForm from "src/components/Forms/LoginForm";
 
-export default function Signup() {
+export default function Login() {
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function Signup() {
             style={{ width: 128, height: 128, borderRadius: 24 }}
           />
         </View>
-        <SignupForm />
+        <LoginForm />
       </View>
     </ScreenView>
   );

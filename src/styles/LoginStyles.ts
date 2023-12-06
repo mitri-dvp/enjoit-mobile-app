@@ -2,12 +2,35 @@ import { StyleSheet } from "react-native";
 import { darken } from "src/utils/color";
 
 export const styles = StyleSheet.create({
+  text: {
+    fontFamily: "RedHatText-SemiBold",
+    color: "#666666",
+  },
+
+  label: {
+    marginVertical: 8,
+  },
+
+  input: {
+    borderColor: "#8B8B8B",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 4,
+  },
+
+  separator_container: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    marginVertical: 20,
+  },
+
   submit_button: {
     backgroundColor: "#D30101",
     borderColor: "#D30101",
     borderRadius: 9999,
     alignSelf: "center",
     paddingHorizontal: 32,
+    marginTop: 32,
   },
   submit_button__press: {
     backgroundColor: darken("#D30101"),
@@ -28,12 +51,5 @@ export const styles = StyleSheet.create({
   button_text__dark: {
     fontFamily: "RedHatText-SemiBold",
     color: "#D30101",
-  },
-  text: {
-    fontFamily: "Rajdhani-SemiBold",
-    color: "#D30101",
-  },
-  text__press: {
-    color: darken("#D30101"),
   },
 });

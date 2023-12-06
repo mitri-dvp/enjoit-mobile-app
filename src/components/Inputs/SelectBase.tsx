@@ -32,8 +32,9 @@ const SelectInputBase = (props: {
   labelText: string;
   inputId: string;
   placeholder?: string;
+  headerText?: string;
   control: Control<any>;
-  items: { name: string; value: string }[];
+  items: { name: string; value: string; icon?: React.ReactElement }[];
 }) => {
   const SelectInputLabel = (): React.ReactElement => (
     <Label {...styles.label} style={styles.text} htmlFor={props.inputId}>
@@ -101,10 +102,30 @@ const SelectInputBase = (props: {
 
             <Select.Content>
               <Select.Viewport>
+                {props.headerText && (
+                  <Text
+                    style={{
+                      alignSelf: "center",
+                      fontFamily: "RedHatText-SemiBold",
+                      paddingVertical: 32,
+                      color: "#666666",
+                    }}
+                  >
+                    {props.headerText}
+                  </Text>
+                )}
                 {props.items.map((item, i) => {
                   return (
                     <Select.Item index={i} key={item.name} value={item.value}>
-                      <Select.ItemText>{item.name}</Select.ItemText>
+                      {item.icon && item.icon}
+                      {item.name}
+                      {/*
+                        To Allow the Icon to be redered properly and keep
+                        the item selection working, display was set to none
+                      */}
+                      <Select.ItemText display="none">
+                        {item.name}
+                      </Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
                         <Image
                           source={require("src/assets/svg/check.svg")}

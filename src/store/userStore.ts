@@ -2,8 +2,7 @@ import { create } from "zustand";
 import dayjs from "src/utils/dayjs";
 
 import { SignupValues } from "src/schemas/SignupSchema";
-
-type SignupValuesType = typeof SignupValues;
+import { LoginValues } from "src/schemas/LoginSchema";
 
 type UserState = {
   nickname: string;
@@ -22,7 +21,8 @@ type UserState = {
 };
 
 type UserActions = {
-  signup: (data: SignupValuesType) => void;
+  signup: (data: typeof SignupValues) => void;
+  login: (data: typeof LoginValues) => void;
 };
 
 type UserStore = UserState & UserActions;
@@ -45,5 +45,6 @@ const initialState = {
 
 export const useUserStore = create<UserStore>((set) => ({
   ...initialState,
-  signup: (data: SignupValuesType) => set(() => data),
+  signup: (data: typeof SignupValues) => set(() => data),
+  login: (data: typeof LoginValues) => set(() => data),
 }));

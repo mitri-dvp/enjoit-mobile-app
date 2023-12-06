@@ -22,9 +22,10 @@ import DataTreatmentSheet from "src/components/Sheets/DataTreatmentSheet";
 import { TermsSchema, TermsValues } from "src/schemas/TermsSchema";
 
 import { styles } from "src/styles/TermsStyles";
+import { darken } from "src/utils/color";
 
 export default function TermsForm(props: { onSubmit: (data: any) => void }) {
-  const { control, handleSubmit, getValues, formState } = useForm({
+  const { control, handleSubmit, getValues, formState, setValue } = useForm({
     defaultValues: TermsValues,
     resolver: TermsSchema,
     mode: "all",
@@ -41,9 +42,17 @@ export default function TermsForm(props: { onSubmit: (data: any) => void }) {
     setShowTermsSheet(!showTermsSheet);
     // router.push("/modals/test-modal");
   };
+  const confirmTermsSheet = () => {
+    setValue("acceptedTerms", true);
+    toggleTermsSheet();
+  };
   const toggleDataTreatmentSheet = () => {
     setShowDataTreatmentSheet(!showDataTreatmentSheet);
     // router.push("/modals/test-modal");
+  };
+  const confirmDataTreatmentSheet = () => {
+    setValue("acceptedDataTreatment", true);
+    toggleDataTreatmentSheet();
   };
 
   return (
@@ -74,10 +83,9 @@ export default function TermsForm(props: { onSubmit: (data: any) => void }) {
             <>
               Yo acepto los{" "}
               <Text
-                style={{
-                  fontFamily: "Rajdhani-SemiBold",
-                  color: "#D30101",
-                }}
+                style={{ fontFamily: styles.text.fontFamily }}
+                color={styles.text.color}
+                pressStyle={styles.text__press}
                 onPress={toggleTermsSheet}
               >
                 terminos y condiciones de Enjoit
@@ -92,10 +100,9 @@ export default function TermsForm(props: { onSubmit: (data: any) => void }) {
             <>
               Yo acepto y autorizo el{" "}
               <Text
-                style={{
-                  fontFamily: "Rajdhani-SemiBold",
-                  color: "#D30101",
-                }}
+                style={{ fontFamily: styles.text.fontFamily }}
+                color={styles.text.color}
+                pressStyle={styles.text__press}
                 onPress={toggleDataTreatmentSheet}
               >
                 tratamiento de datos de Enjoit
@@ -119,14 +126,18 @@ export default function TermsForm(props: { onSubmit: (data: any) => void }) {
           Acepto términos y condiciones
         </Text>
       </Button>
+
       <SheetBase open={showTermsSheet} setOpen={setShowTermsSheet}>
-        <TermsSheet onBack={toggleTermsSheet} />
+        <TermsSheet onBack={toggleTermsSheet} onConfirm={confirmTermsSheet} />
       </SheetBase>
       <SheetBase
         open={showDataTreatmentSheet}
         setOpen={setShowDataTreatmentSheet}
       >
-        <DataTreatmentSheet onBack={toggleDataTreatmentSheet} />
+        <DataTreatmentSheet
+          onBack={toggleDataTreatmentSheet}
+          onConfirm={confirmDataTreatmentSheet}
+        />
       </SheetBase>
     </View>
   );

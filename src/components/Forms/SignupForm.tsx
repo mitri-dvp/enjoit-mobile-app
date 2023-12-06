@@ -16,6 +16,7 @@ import TextInputBase from "src/components/Inputs/TextInputBase";
 import PhoneInputBase from "src/components/Inputs/PhoneInputBase";
 
 import { useUserStore } from "src/store/userStore";
+import { useRouter } from "expo-router";
 
 export default function SignupForm() {
   const { control, handleSubmit, getValues, formState } = useForm({
@@ -24,7 +25,10 @@ export default function SignupForm() {
     mode: "all",
   });
 
+  const router = useRouter();
   const userStore = useUserStore();
+
+  const navigateToLogin = () => router.replace("/login");
 
   const onSubmit = handleSubmit((data) => {
     userStore.signup(data);
@@ -193,7 +197,7 @@ export default function SignupForm() {
           alignItems: "center",
         }}
       >
-        <TouchableOpacity>
+        <TouchableOpacity onPress={navigateToLogin}>
           <Text style={styles.button_text__dark}>¿Ya tienes una cuenta?</Text>
         </TouchableOpacity>
       </View>

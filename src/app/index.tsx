@@ -31,7 +31,10 @@ import {
 } from "src/utils/notifications";
 import { allowedLocationAsync } from "src/utils/location";
 
+import { useRootStore } from "src/store/rootStore";
+
 export default function Root() {
+  const rootStore = useRootStore();
   const navigation = useNavigation();
   const router = useRouter();
 
@@ -41,17 +44,29 @@ export default function Root() {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
 
+  const goToRoute = () => {
+    router.push("/home/");
+  };
+
+  const navigateToSignup = () => router.push("/signup");
+  const navigateToLogin = () => router.push("/login");
+
   const handleEmailPress = () => {
+    if (rootStore.hasAccepted) return handleNavigateToSignup();
     setOpen(true);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     setOpen(false);
+    rootStore.accept();
+    handleNavigateToSignup();
+  };
 
+  const handleNavigateToSignup = async () => {
     if (!(await allowedLocationAsync())) return;
     if (!(await allowedNotificationsAsync())) return;
 
-    router.push("/signup");
+    navigateToSignup();
   };
 
   return (
@@ -70,6 +85,10 @@ export default function Root() {
             />
           </View>
           <View>
+            <TouchableOpacity onPress={goToRoute}>
+              {/* <Text style={styles.button_text}>Navegar</Text> */}
+            </TouchableOpacity>
+
             <Text style={styles.title}>
               {`Ordena, recoge, reserva\nlo que sea.`}
             </Text>
@@ -133,7 +152,7 @@ export default function Root() {
               <TouchableOpacity>
                 <Text style={styles.button_text}>Ingresa como invitado</Text>
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={navigateToLogin}>
                 <Text style={styles.button_text}>Ya tengo cuenta</Text>
               </TouchableOpacity>
             </View>
