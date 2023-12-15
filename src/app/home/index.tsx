@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     fontSize: 60,
     fontFamily: "RedHatText-Bold",
     lineHeight: 54,
-    paddingVertical: 10,
+    paddingVertical: 12,
     color: "#FFFFFF",
   },
 

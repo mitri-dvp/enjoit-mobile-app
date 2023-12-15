@@ -28,7 +28,7 @@ export default function SignupForm() {
   const router = useRouter();
   const userStore = useUserStore();
 
-  const navigateToLogin = () => router.replace("/login");
+  const navigateToLogin = () => router.push("/login");
 
   const onSubmit = handleSubmit((data) => {
     userStore.signup(data);

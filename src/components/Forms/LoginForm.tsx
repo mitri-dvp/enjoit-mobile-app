@@ -1,19 +1,15 @@
 import { Image } from "expo-image";
 
-import { Text, View, Separator, Label, Input, Button } from "tamagui";
+import { Text, View, Button } from "tamagui";
 
 import { useForm } from "react-hook-form";
-
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 import { styles } from "src/styles/LoginStyles";
 
 import { LoginSchema, LoginValues } from "src/schemas/LoginSchema";
 
 import SelectInputBase from "src/components/Inputs/SelectBase";
-import DateTimeInputBase from "src/components/Inputs/DateTimePickerBase";
 import TextInputBase from "src/components/Inputs/TextInputBase";
-import PhoneInputBase from "src/components/Inputs/PhoneInputBase";
 
 import { useUserStore } from "src/store/userStore";
 
@@ -106,26 +102,6 @@ export default function LoginForm() {
           Ingresar
         </Text>
       </Button>
-
-      <View
-        style={{
-          marginTop: 64,
-          alignItems: "center",
-          gap: 32,
-        }}
-      >
-        <TouchableOpacity>
-          <Text style={styles.button_text__dark}>
-            ¿Olvidaste tu contraseña?
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={styles.button_text__dark}>Regístrate</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={styles.button_text__dark}>Ingresa como invitado</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 }

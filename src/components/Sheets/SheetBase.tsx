@@ -1,20 +1,16 @@
 import { Sheet } from "tamagui";
-import {
-  StyleSheet,
-  ViewStyle,
-  TextStyle,
-  StyleProp,
-  Dimensions,
-} from "react-native";
+import { Dimensions } from "react-native";
 
 const SheetBase = (props: {
   open: boolean;
   setOpen: (open: boolean) => void;
   children: React.FunctionComponentElement<any>;
+  maxHeight?: number | "unset";
 }) => {
   return (
     <Sheet
       modal
+      unmountChildrenWhenHidden
       open={props.open}
       onOpenChange={props.setOpen}
       snapPointsMode="fit"
@@ -26,7 +22,9 @@ const SheetBase = (props: {
       />
 
       <Sheet.Frame>
-        <Sheet.ScrollView maxHeight={Dimensions.get("window").height * 0.75}>
+        <Sheet.ScrollView
+          maxHeight={props.maxHeight || Dimensions.get("window").height * 0.75}
+        >
           {props.children}
         </Sheet.ScrollView>
       </Sheet.Frame>

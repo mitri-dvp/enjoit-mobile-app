@@ -32,7 +32,7 @@ const TermsSheet = (props: { onBack: () => void; onConfirm: () => void }) => {
           alignSelf: "center",
           fontSize: 16,
           fontFamily: "Rajdhani-SemiBold",
-          paddingVertical: 10,
+          paddingVertical: 12,
           color: "#666666",
         }}
       >

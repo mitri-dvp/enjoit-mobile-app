@@ -6,7 +6,7 @@ import { Controller } from "react-hook-form";
 import { Control, FieldError } from "react-hook-form/dist/types";
 
 const TextInputBase = (props: {
-  labelText: string;
+  labelText?: string;
   inputId: string;
   placeholder: string;
   control: Control<any>;
@@ -59,7 +59,7 @@ const TextInputBase = (props: {
         fieldState: { error },
       }) => (
         <>
-          <TextInputLabel />
+          {props.labelText && <TextInputLabel />}
           <View>
             <Input
               {...styles.input}

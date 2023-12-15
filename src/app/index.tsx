@@ -50,6 +50,7 @@ export default function Root() {
 
   const navigateToSignup = () => router.push("/signup");
   const navigateToLogin = () => router.push("/login");
+  const navigateToHomeAsGuest = () => router.push("/home/");
 
   const handleEmailPress = () => {
     if (rootStore.hasAccepted) return handleNavigateToSignup();
@@ -149,7 +150,7 @@ export default function Root() {
                 alignItems: "center",
               }}
             >
-              <TouchableOpacity>
+              <TouchableOpacity onPress={navigateToHomeAsGuest}>
                 <Text style={styles.button_text}>Ingresa como invitado</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={navigateToLogin}>
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
     fontSize: 60,
     fontFamily: "RedHatText-Bold",
     lineHeight: 54,
-    paddingVertical: 10,
+    paddingVertical: 12,
     color: "#FFFFFF",
   },
 

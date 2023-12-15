@@ -22,7 +22,6 @@ import DataTreatmentSheet from "src/components/Sheets/DataTreatmentSheet";
 import { TermsSchema, TermsValues } from "src/schemas/TermsSchema";
 
 import { styles } from "src/styles/TermsStyles";
-import { darken } from "src/utils/color";
 
 export default function TermsForm(props: { onSubmit: (data: any) => void }) {
   const { control, handleSubmit, getValues, formState, setValue } = useForm({
@@ -68,7 +67,7 @@ export default function TermsForm(props: { onSubmit: (data: any) => void }) {
           marginBottom: 16,
           fontSize: 16,
           fontFamily: "Rajdhani-SemiBold",
-          paddingVertical: 10,
+          paddingVertical: 12,
           color: "#666666",
         }}
       >
