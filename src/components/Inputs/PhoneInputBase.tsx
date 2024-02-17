@@ -91,7 +91,6 @@ const TextInputBase = (props: {
                 value={countryCode}
                 onChangeText={(value) => handleChange(value, "countryCode")}
                 secureTextEntry={props.secureText && secureTextEntry}
-                keyboardType="number-pad"
               />
               <Input
                 {...styles.input_phone}

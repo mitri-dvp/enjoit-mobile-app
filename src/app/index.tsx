@@ -31,7 +31,7 @@ import {
 } from "src/utils/notifications";
 import { allowedLocationAsync } from "src/utils/location";
 
-import { useRootStore } from "src/store/rootStore";
+import { useRootStore } from "src/store/root";
 
 export default function Root() {
   const rootStore = useRootStore();

@@ -7,6 +7,10 @@ export const styles = StyleSheet.create({
     color: "#666666",
   },
 
+  text__error: {
+    color: "#D30101",
+  },
+
   label: {
     marginVertical: 8,
   },
@@ -31,6 +35,7 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     paddingHorizontal: 32,
     marginTop: 32,
+    minWidth: "50%",
   },
   submit_button__press: {
     backgroundColor: darken("#D30101"),

@@ -59,7 +59,7 @@ const TextInputBase = (props: {
         fieldState: { error },
       }) => (
         <>
-          {props.labelText && <TextInputLabel />}
+          {!!props.labelText && <TextInputLabel />}
           <View>
             <Input
               {...styles.input}
@@ -74,10 +74,10 @@ const TextInputBase = (props: {
               secureTextEntry={props.secureText && secureTextEntry}
               keyboardType={props.inputKeyboardType}
             />
-            {props.secureText && <TextInputIcon />}
+            {!!props.secureText && <TextInputIcon />}
           </View>
-          {props.captionText && <TextInputCaption />}
-          {error && <TextInputError error={error} />}
+          {!!props.captionText && <TextInputCaption />}
+          {!!error && <TextInputError error={error} />}
         </>
       )}
     />

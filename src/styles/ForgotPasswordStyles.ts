@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     paddingHorizontal: 32,
     marginTop: 16,
+    width: "100%",
   },
   submit_button__press: {
     backgroundColor: darken("#D30101"),
@@ -52,6 +53,9 @@ export const styles = StyleSheet.create({
 
   text: {
     fontFamily: "Rajdhani-SemiBold",
+    color: "#D30101",
+  },
+  text__error: {
     color: "#D30101",
   },
   text__press: {

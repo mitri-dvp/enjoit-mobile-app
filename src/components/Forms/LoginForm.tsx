@@ -1,35 +1,76 @@
 import { Image } from "expo-image";
-
-import { Text, View, Button } from "tamagui";
+import { useRouter } from "expo-router";
+import { Text, View, Button, Spinner } from "tamagui";
 
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 
-import { styles } from "src/styles/LoginStyles";
-
-import { LoginSchema, LoginValues } from "src/schemas/LoginSchema";
+import { LoginInputSchema, LoginInputValues } from "src/schemas/auth";
+import { LoginModelType } from "src/models/zod/auth";
 
 import SelectInputBase from "src/components/Inputs/SelectBase";
 import TextInputBase from "src/components/Inputs/TextInputBase";
 
-import { useUserStore } from "src/store/userStore";
+import { loginUser } from "src/services/auth";
+import { ErrorResponseHandler } from "src/utils/exception";
+
+import { styles } from "src/styles/LoginStyles";
 
 export default function LoginForm() {
-  const { control, handleSubmit, getValues, formState } = useForm({
-    defaultValues: LoginValues,
-    resolver: LoginSchema,
+  const router = useRouter();
+
+  const navigateToLogin = () => router.push("/login");
+  const navigateToHome = () => router.push("/home/");
+
+  // Form Handler
+  const { control, handleSubmit, formState, setError } = useForm({
+    defaultValues: LoginInputValues,
+    resolver: zodResolver(LoginInputSchema),
     mode: "all",
   });
 
-  const userStore = useUserStore();
+  // Query Mutation
+  const { mutate, isPending } = useMutation({
+    mutationFn: (payload: LoginModelType) => loginUser(payload),
+    onSuccess: () => navigateToHome(),
+    onError: (err: any) => {
+      const error = ErrorResponseHandler(err);
 
-  const onSubmit = handleSubmit((data) => {
-    userStore.login(data);
+      if (error.errors.length) {
+        for (let i = 0; i < error.errors.length; i++) {
+          const { path, code } = error.errors[i];
+
+          if (path[0] === "email") {
+            if (code === "unique_constraint") {
+              setError("root.server", {
+                message: "Email ya ha sido registrado",
+              });
+            }
+          }
+
+          if (code === "invalid_credentials") {
+            setError("root.server", {
+              message: "Credenciales inválidas",
+            });
+          }
+        }
+      }
+
+      if (!error.errors.length) {
+        setError("root.server", {
+          message: "Algo ocurrio mal",
+        });
+      }
+    },
   });
+
+  const onSubmit = handleSubmit((data) => mutate(data));
 
   return (
     <View>
       <SelectInputBase
-        inputId="country"
+        inputId="birthCountry"
         labelText="País de origen"
         placeholder="Selecciona país"
         headerText="Selecciona el país donde te encuentras."
@@ -87,20 +128,31 @@ export default function LoginForm() {
         secureText
       />
 
+      {formState.errors.root?.server && (
+        <Text style={[styles.text, styles.text__error, { marginTop: 16 }]}>
+          {formState.errors.root.server.message}
+        </Text>
+      )}
+
       <Button
         {...styles.submit_button}
         pressStyle={styles.submit_button__press}
         style={[!formState.isValid && styles.submit_button__disabled]}
         onPress={() => onSubmit()}
+        disabled={isPending}
       >
-        <Text
-          style={[
-            styles.button_text,
-            !formState.isValid && styles.button_text__disabled,
-          ]}
-        >
-          Ingresar
-        </Text>
+        {isPending ? (
+          <Spinner size="small" color="#BCBCBC" />
+        ) : (
+          <Text
+            style={[
+              styles.button_text,
+              !formState.isValid && styles.button_text__disabled,
+            ]}
+          >
+            Ingresar
+          </Text>
+        )}
       </Button>
     </View>
   );

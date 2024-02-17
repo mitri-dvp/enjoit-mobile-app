@@ -10,6 +10,8 @@ import {
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+
 import { TamaguiProvider } from "tamagui";
 import tamaguiConfig from "src/tamagui.config";
 
@@ -20,6 +22,11 @@ export {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+// Enable Reactotron Debugger
+if (__DEV__) {
+  require("src/reactotron.config");
+}
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -66,12 +73,17 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const queryClient = new QueryClient();
 
   return (
-    <TamaguiProvider config={tamaguiConfig}>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack />
-      </ThemeProvider>
-    </TamaguiProvider>
+    <QueryClientProvider client={queryClient}>
+      <TamaguiProvider config={tamaguiConfig}>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          <Stack />
+        </ThemeProvider>
+      </TamaguiProvider>
+    </QueryClientProvider>
   );
 }

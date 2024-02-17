@@ -78,6 +78,7 @@ const DateTimeInputBase = (props: {
           <DateTimePickerModal
             cancelTextIOS={props.cancelText}
             confirmTextIOS={props.confirmText}
+            locale={"es_CO"}
             date={value}
             isVisible={show}
             mode={type}

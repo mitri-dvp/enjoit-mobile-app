@@ -1,37 +1,85 @@
 import { Image } from "expo-image";
-
-import { Text, View, Separator, Label, Input, Button } from "tamagui";
+import { useRouter } from "expo-router";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { Text, View, Separator, Button, Spinner } from "tamagui";
 
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { parsePhoneNumber } from "libphonenumber-js";
 
-import { TouchableOpacity } from "react-native-gesture-handler";
-
-import { styles } from "src/styles/SignupStyles";
-
-import { SignupSchema, SignupValues } from "src/schemas/SignupSchema";
+import { SignupInputSchema, SignupInputValues } from "src/schemas/auth";
+import { SignupModelType } from "src/models/zod/auth";
 
 import SelectInputBase from "src/components/Inputs/SelectBase";
 import DateTimeInputBase from "src/components/Inputs/DateTimePickerBase";
 import TextInputBase from "src/components/Inputs/TextInputBase";
 import PhoneInputBase from "src/components/Inputs/PhoneInputBase";
 
-import { useUserStore } from "src/store/userStore";
-import { useRouter } from "expo-router";
+import { signupUser } from "src/services/auth";
+import { ErrorResponseHandler } from "src/utils/exception";
+
+import { styles } from "src/styles/SignupStyles";
 
 export default function SignupForm() {
-  const { control, handleSubmit, getValues, formState } = useForm({
-    defaultValues: SignupValues,
-    resolver: SignupSchema,
+  const router = useRouter();
+
+  const navigateToLogin = () => router.push("/login");
+  const navigateToHome = () => router.push("/home/");
+
+  // Form Handler
+  const { control, handleSubmit, formState, setError } = useForm({
+    defaultValues: SignupInputValues,
+    resolver: zodResolver(SignupInputSchema),
     mode: "all",
   });
 
-  const router = useRouter();
-  const userStore = useUserStore();
+  // Query Mutation
+  const { mutate, isPending } = useMutation({
+    mutationFn: (payload: SignupModelType) => signupUser(payload),
+    onSuccess: () => navigateToHome(),
+    onError: (err: any) => {
+      const error = ErrorResponseHandler(err);
 
-  const navigateToLogin = () => router.push("/login");
+      if (error.errors.length) {
+        for (let i = 0; i < error.errors.length; i++) {
+          const { path, code } = error.errors[i];
 
+          if (path[0] === "email") {
+            if (code === "unique_constraint") {
+              setError("root.server", {
+                message: "Email ya ha sido registrado",
+              });
+            }
+          }
+        }
+      }
+
+      if (!error.errors.length) {
+        setError("root.server", {
+          message: "Algo ocurrio mal",
+        });
+      }
+    },
+  });
+
+  // Form On Submit
   const onSubmit = handleSubmit((data) => {
-    userStore.signup(data);
+    const { countryCallingCode, nationalNumber } = parsePhoneNumber(
+      data.phone,
+      "CO"
+    );
+
+    const { confirmPassword, ...rest } = data;
+    const payload: SignupModelType = {
+      ...rest,
+      phone: nationalNumber,
+      phonePrefix: countryCallingCode,
+      birthPostalCode:
+        data.birthPostalCode === null ? null : Number(data.birthPostalCode),
+    };
+
+    mutate(payload);
   });
 
   return (
@@ -50,7 +98,7 @@ export default function SignupForm() {
 
       <TextInputBase
         labelText={"Nickname"}
-        inputId="nickname"
+        inputId="nickName"
         placeholder={"Ingresa nickname"}
         control={control}
       />
@@ -93,7 +141,7 @@ export default function SignupForm() {
 
       <TextInputBase
         labelText={"Nombre"}
-        inputId="name"
+        inputId="firstName"
         placeholder={"Ingresa nombre"}
         control={control}
       />
@@ -118,7 +166,7 @@ export default function SignupForm() {
       />
 
       <DateTimeInputBase
-        inputId="dateOfBirth"
+        inputId="birthDate"
         labelText="Fecha de nacimiento"
         placeholder="Seleccionar fecha"
         control={control}
@@ -145,7 +193,7 @@ export default function SignupForm() {
       </View>
 
       <SelectInputBase
-        inputId="country"
+        inputId="birthCountry"
         labelText="País de origen"
         placeholder="Selecciona país"
         control={control}
@@ -153,7 +201,7 @@ export default function SignupForm() {
       />
 
       <SelectInputBase
-        inputId="state"
+        inputId="birthState"
         labelText="Estado"
         placeholder="Selecciona estado"
         control={control}
@@ -161,7 +209,7 @@ export default function SignupForm() {
       />
 
       <SelectInputBase
-        inputId="city"
+        inputId="birthCity"
         labelText="Ciudad"
         placeholder="Selecciona ciudad"
         control={control}
@@ -169,26 +217,37 @@ export default function SignupForm() {
       />
 
       <TextInputBase
-        inputId="zipCode"
+        inputId="birthPostalCode"
         labelText={"Código Postal (opcional)"}
         placeholder={"Ingresa código postal "}
         control={control}
       />
+
+      {formState.errors.root?.server && (
+        <Text style={[styles.text, styles.text__error, { marginTop: 16 }]}>
+          {formState.errors.root.server.message}
+        </Text>
+      )}
 
       <Button
         {...styles.submit_button}
         pressStyle={styles.submit_button__press}
         style={[!formState.isValid && styles.submit_button__disabled]}
         onPress={() => onSubmit()}
+        disabled={isPending}
       >
-        <Text
-          style={[
-            styles.button_text,
-            !formState.isValid && styles.button_text__disabled,
-          ]}
-        >
-          Registrarme
-        </Text>
+        {isPending ? (
+          <Spinner size="small" color="#BCBCBC" />
+        ) : (
+          <Text
+            style={[
+              styles.button_text,
+              !formState.isValid && styles.button_text__disabled,
+            ]}
+          >
+            Registrarme
+          </Text>
+        )}
       </Button>
 
       <View

@@ -19,7 +19,7 @@ import SheetBase from "src/components/Sheets/SheetBase";
 import TermsSheet from "src/components/Sheets/TermsSheet";
 import DataTreatmentSheet from "src/components/Sheets/DataTreatmentSheet";
 
-import { TermsSchema, TermsValues } from "src/schemas/TermsSchema";
+import { TermsSchema, TermsValues } from "src/schemas/root";
 
 import { styles } from "src/styles/TermsStyles";
 

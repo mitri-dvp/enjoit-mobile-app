@@ -1,36 +1,52 @@
-import { Image } from "expo-image";
-
 import { Text, View, Button } from "tamagui";
 
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import TextInputBase from "src/components/Inputs/TextInputBase";
+
+import { FPStepOneInputSchema, FPStepOneInputValues } from "src/schemas/auth";
+
+import { FPIdentifierType, FPStepType } from "src/models/zod/auth";
 
 import { styles } from "src/styles/ForgotPasswordStyles";
 
-import {
-  ForgotPasswordSchema,
-  ForgotPasswordValues,
-} from "src/schemas/ForgotPasswordSchema";
-
-import TextInputBase from "src/components/Inputs/TextInputBase";
-import { useForgotPasswordStore } from "src/store/forgotPasswordStore";
-
-export default function StepOneForm() {
-  const forgotPasswordStore = useForgotPasswordStore();
-
-  const { control, handleSubmit, getValues, formState } = useForm({
-    defaultValues: ForgotPasswordValues,
-    resolver: ForgotPasswordSchema,
+export default function StepOneForm({
+  setStep,
+  setIdentifier,
+}: {
+  setStep: (step: FPStepType) => void;
+  setIdentifier: (identifier: FPIdentifierType) => void;
+}) {
+  const { control, handleSubmit, formState } = useForm({
+    defaultValues: FPStepOneInputValues,
+    resolver: zodResolver(FPStepOneInputSchema),
     mode: "all",
   });
 
   const onSubmit = handleSubmit((data) => {
-    if (isNaN(Number(data.phoneOrEmail))) {
-      forgotPasswordStore.updateEmail(data.phoneOrEmail);
-    } else {
-      forgotPasswordStore.updatePhone(data.phoneOrEmail);
+    const isEmail = isNaN(Number(data.phoneOrEmail));
+    const isPhone = !isEmail;
+
+    if (isEmail) {
+      setIdentifier({
+        value: data.phoneOrEmail,
+        type: "email",
+      });
     }
 
-    forgotPasswordStore.goToStep("step-2");
+    if (isPhone) {
+      const phone = data.phoneOrEmail.startsWith("+")
+        ? data.phoneOrEmail
+        : `+57${data.phoneOrEmail}`;
+
+      setIdentifier({
+        value: phone,
+        type: "phone",
+      });
+    }
+
+    setStep("step-2");
   });
 
   return (
