@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
-import { Text, View, Button, Spinner } from "tamagui";
+import { Text, View, Button, Spinner, YStack } from "tamagui";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,7 +20,7 @@ import { FPIdentifierType, FPStepType } from "src/models/zod/auth";
 import { ErrorResponseHandler } from "src/utils/exception";
 import { changePassword } from "src/services/auth";
 
-import { styles } from "src/styles/ForgotPasswordStyles";
+import { styles } from "src/styles/shared";
 import { Alert } from "react-native";
 
 export default function StepThreeForm({
@@ -89,27 +89,29 @@ export default function StepThreeForm({
 
   return (
     <View>
-      <Text style={styles.title} />
+      <YStack marginTop={48} />
 
-      <TextInputBase
-        inputId="newPassword"
-        labelText="Ingresa nueva contraseña"
-        placeholder={"Nueva contraseña"}
-        control={control}
-      />
+      <YStack marginVertical={20}>
+        <TextInputBase
+          inputId="newPassword"
+          labelText="Ingresa nueva contraseña"
+          placeholder={"Nueva contraseña"}
+          control={control}
+        />
 
-      <TextInputBase
-        inputId="confirmPassword"
-        labelText="Confirmar nueva contraseña"
-        placeholder={"Confirmar contraseña"}
-        control={control}
-      />
+        <TextInputBase
+          inputId="confirmPassword"
+          labelText="Confirmar nueva contraseña"
+          placeholder={"Confirmar contraseña"}
+          control={control}
+        />
 
-      {formState.errors.root?.server && (
-        <Text style={[styles.text, styles.text__error, { marginTop: 16 }]}>
-          {formState.errors.root.server.message}
-        </Text>
-      )}
+        {formState.errors.root?.server && (
+          <Text style={[styles.text, styles.text__error, { marginTop: 16 }]}>
+            {formState.errors.root.server.message}
+          </Text>
+        )}
+      </YStack>
 
       <Button
         {...styles.submit_button}

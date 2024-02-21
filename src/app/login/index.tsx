@@ -5,7 +5,7 @@ import { StyleSheet, Dimensions } from "react-native";
 import { useNavigation, useRouter } from "expo-router";
 import { Image } from "expo-image";
 
-import { View, Text } from "tamagui";
+import { View, Text, YStack } from "tamagui";
 
 import { TouchableOpacity } from "react-native-gesture-handler";
 
@@ -13,6 +13,7 @@ import ScreenView from "src/components/ScreenView";
 import LoginForm from "src/components/Forms/LoginForm";
 import SheetBase from "src/components/Sheets/SheetBase";
 import ForgotPasswordSheet from "src/components/Sheets/ForgotPasswordSheet";
+import { styles as shared } from "src/styles/shared";
 
 export default function Login() {
   const navigation = useNavigation();
@@ -42,23 +43,23 @@ export default function Login() {
           <Image
             source={require("src/assets/images/icon.png")}
             contentFit="contain"
-            style={{ width: 128, height: 128, borderRadius: 24 }}
+            style={styles.logo}
           />
         </View>
+
         <LoginForm />
-        <View style={styles.navigation_container}>
+
+        <YStack gap={32} marginTop={64}>
           <TouchableOpacity onPress={handleForgotPassword}>
-            <Text style={styles.button_text__dark}>
-              ¿Olvidaste tu contraseña?
-            </Text>
+            <Text style={styles.touchable_text}>¿Olvidaste tu contraseña?</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={navigateToSignup}>
-            <Text style={styles.button_text__dark}>Regístrate</Text>
+            <Text style={styles.touchable_text}>Regístrate</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={navigateToHomeAsGuest}>
-            <Text style={styles.button_text__dark}>Ingresa como invitado</Text>
+            <Text style={styles.touchable_text}>Ingresa como invitado</Text>
           </TouchableOpacity>
-        </View>
+        </YStack>
       </View>
 
       <SheetBase
@@ -76,10 +77,10 @@ export default function Login() {
 }
 
 const styles = StyleSheet.create({
+  ...shared,
+
   screen: { flex: 1 },
-
   scrollView: { flex: 1 },
-
   container: {
     flex: 1,
     minHeight: Dimensions.get("screen").height,
@@ -92,38 +93,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "row",
   },
-
-  text: {
-    fontFamily: "RedHatText-SemiBold",
-    color: "#666666",
-  },
-
-  label: {
-    marginVertical: 8,
-  },
-
-  input: {
-    borderColor: "#8B8B8B",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 4,
-  },
-
-  navigation_container: {
-    marginTop: 64,
-    alignItems: "center",
-    gap: 32,
-  },
-
-  button_text: {
-    fontFamily: "RedHatText-SemiBold",
-    color: "#FFFFFF",
-  },
-  button_text__disabled: {
-    fontFamily: "RedHatText-SemiBold",
-    color: "#BCBCBC",
-  },
-  button_text__dark: {
-    fontFamily: "RedHatText-SemiBold",
-    color: "#D30101",
+  logo: {
+    width: 128,
+    height: 128,
+    borderRadius: 24,
   },
 });

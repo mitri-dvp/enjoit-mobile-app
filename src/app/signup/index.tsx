@@ -9,6 +9,7 @@ import { View } from "tamagui";
 
 import ScreenView from "src/components/ScreenView";
 import SignupForm from "src/components/Forms/SignupForm";
+import { styles as shared } from "src/styles/shared";
 
 export default function Signup() {
   const navigation = useNavigation();
@@ -24,9 +25,10 @@ export default function Signup() {
           <Image
             source={require("src/assets/images/icon.png")}
             contentFit="contain"
-            style={{ width: 128, height: 128, borderRadius: 24 }}
+            style={styles.logo}
           />
         </View>
+
         <SignupForm />
       </View>
     </ScreenView>
@@ -34,10 +36,10 @@ export default function Signup() {
 }
 
 const styles = StyleSheet.create({
+  ...shared,
+
   screen: { flex: 1 },
-
   scrollView: { flex: 1 },
-
   container: {
     flex: 1,
     minHeight: Dimensions.get("screen").height,
@@ -50,19 +52,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "row",
   },
-
-  text: {
-    fontFamily: "RedHatText-SemiBold",
-    color: "#666666",
-  },
-
-  label: {
-    marginVertical: 8,
-  },
-
-  input: {
-    borderColor: "#8B8B8B",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 4,
+  logo: {
+    width: 128,
+    height: 128,
+    borderRadius: 24,
   },
 });

@@ -1,6 +1,6 @@
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
-import { Text, View, Button, Spinner } from "tamagui";
+import { Text, View, Button, Spinner, YStack } from "tamagui";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,7 +15,7 @@ import TextInputBase from "src/components/Inputs/TextInputBase";
 import { loginUser } from "src/services/auth";
 import { ErrorResponseHandler } from "src/utils/exception";
 
-import { styles } from "src/styles/LoginStyles";
+import { styles } from "src/styles/shared";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -68,92 +68,96 @@ export default function LoginForm() {
   const onSubmit = handleSubmit((data) => mutate(data));
 
   return (
-    <View>
-      <SelectInputBase
-        inputId="birthCountry"
-        labelText="País de origen"
-        placeholder="Selecciona país"
-        headerText="Selecciona el país donde te encuentras."
-        control={control}
-        items={[
-          {
-            name: "Colombia",
-            value: "colombia",
-            icon: (
-              <Image
-                source={require("src/assets/images/flags/colombia.png")}
-                contentFit="contain"
-                style={{ width: 32, height: 32, marginRight: 16 }}
-              />
-            ),
-          },
-          {
-            name: "España",
-            value: "españa",
-            icon: (
-              <Image
-                source={require("src/assets/images/flags/spain.png")}
-                contentFit="contain"
-                style={{ width: 32, height: 32, marginRight: 16 }}
-              />
-            ),
-          },
-          {
-            name: "United States",
-            value: "united-states",
-            icon: (
-              <Image
-                source={require("src/assets/images/flags/united-states.png")}
-                contentFit="contain"
-                style={{ width: 32, height: 32, marginRight: 16 }}
-              />
-            ),
-          },
-        ]}
-      />
+    <YStack marginTop={32}>
+      <YStack>
+        <SelectInputBase
+          inputId="birthCountry"
+          labelText="País de origen"
+          placeholder="Selecciona país"
+          headerText="Selecciona el país donde te encuentras."
+          control={control}
+          items={[
+            {
+              name: "Colombia",
+              value: "colombia",
+              icon: (
+                <Image
+                  source={require("src/assets/images/flags/colombia.png")}
+                  contentFit="contain"
+                  style={{ width: 32, height: 32, marginRight: 16 }}
+                />
+              ),
+            },
+            {
+              name: "España",
+              value: "españa",
+              icon: (
+                <Image
+                  source={require("src/assets/images/flags/spain.png")}
+                  contentFit="contain"
+                  style={{ width: 32, height: 32, marginRight: 16 }}
+                />
+              ),
+            },
+            {
+              name: "United States",
+              value: "united-states",
+              icon: (
+                <Image
+                  source={require("src/assets/images/flags/united-states.png")}
+                  contentFit="contain"
+                  style={{ width: 32, height: 32, marginRight: 16 }}
+                />
+              ),
+            },
+          ]}
+        />
 
-      <TextInputBase
-        labelText={"Email"}
-        inputId="email"
-        placeholder={"Ingresa email"}
-        control={control}
-        inputKeyboardType="email-address"
-      />
+        <TextInputBase
+          labelText={"Email"}
+          inputId="email"
+          placeholder={"Ingresa email"}
+          control={control}
+          inputKeyboardType="email-address"
+        />
 
-      <TextInputBase
-        labelText={"Contraseña"}
-        inputId="password"
-        placeholder={"Ingresa contraseña"}
-        control={control}
-        secureText
-      />
+        <TextInputBase
+          labelText={"Contraseña"}
+          inputId="password"
+          placeholder={"Ingresa contraseña"}
+          control={control}
+          secureText
+        />
 
-      {formState.errors.root?.server && (
-        <Text style={[styles.text, styles.text__error, { marginTop: 16 }]}>
-          {formState.errors.root.server.message}
-        </Text>
-      )}
-
-      <Button
-        {...styles.submit_button}
-        pressStyle={styles.submit_button__press}
-        style={[!formState.isValid && styles.submit_button__disabled]}
-        onPress={() => onSubmit()}
-        disabled={isPending}
-      >
-        {isPending ? (
-          <Spinner size="small" color="#BCBCBC" />
-        ) : (
-          <Text
-            style={[
-              styles.button_text,
-              !formState.isValid && styles.button_text__disabled,
-            ]}
-          >
-            Ingresar
+        {formState.errors.root?.server && (
+          <Text style={[styles.text, styles.text__error, { marginTop: 16 }]}>
+            {formState.errors.root.server.message}
           </Text>
         )}
-      </Button>
-    </View>
+      </YStack>
+
+      <YStack marginTop={32}>
+        <Button
+          {...styles.submit_button}
+          pressStyle={styles.submit_button__press}
+          style={[!formState.isValid && styles.submit_button__disabled]}
+          onPress={() => onSubmit()}
+          disabled={isPending}
+        >
+          {isPending ? (
+            <Spinner size="small" color="#BCBCBC" />
+          ) : (
+            <Text
+              style={[
+                styles.button_text,
+                !formState.isValid && styles.button_text__disabled,
+              ]}
+            >
+              Ingresar
+            </Text>
+          )}
+        </Button>
+      </YStack>
+    </YStack>
   );
 }

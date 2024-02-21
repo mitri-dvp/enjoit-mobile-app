@@ -1,5 +1,6 @@
 import { Image } from "expo-image";
-import { styles } from "src/styles/TermsStyles";
+import { StyleSheet } from "react-native";
+import { styles as shared } from "src/styles/shared";
 
 import {
   Button,
@@ -17,31 +18,18 @@ const DataTreatmentSheet = (props: {
   onConfirm: () => void;
 }) => {
   return (
-    <View
-      style={{
-        paddingVertical: 16,
-        paddingHorizontal: 32,
-      }}
-    >
-      <View style={{ marginTop: 16 }} onPress={props.onBack}>
+    <View style={styles.container}>
+      <YStack marginTop={16} onPress={props.onBack}>
         <Image
           source={require("src/assets/svg/chevron-left.svg")}
           contentFit="contain"
-          style={{ width: 24, height: 24 }}
+          style={styles.icon}
         />
-      </View>
-      <Text
-        style={{
-          alignSelf: "center",
-          fontSize: 16,
-          fontFamily: "Rajdhani-SemiBold",
-          paddingVertical: 12,
-          color: "#666666",
-        }}
-      >
-        Tratamiento de Datos
-      </Text>
-      <View style={{ gap: 16, marginVertical: 16 }}>
+      </YStack>
+
+      <Text style={styles.title}>Tratamiento de Datos</Text>
+
+      <YStack gap={16} marginVertical={16}>
         <Text>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi quas
           alias explicabo quod exercitationem commodi, soluta rem voluptates
@@ -66,17 +54,42 @@ const DataTreatmentSheet = (props: {
           aperiam ratione magni natus autem asperiores inventore iusto molestias
           ab perspiciatis. Unde.
         </Text>
-      </View>
-      <Button
-        {...styles.submit_button}
-        width={"100%"}
-        pressStyle={styles.submit_button__press}
-        onPress={() => props.onConfirm()}
-      >
-        <Text style={[styles.button_text]}>Aceptar</Text>
-      </Button>
+      </YStack>
+
+      <YStack marginVertical={16}>
+        <Button
+          {...styles.submit_button}
+          width={"100%"}
+          pressStyle={styles.submit_button__press}
+          onPress={() => props.onConfirm()}
+        >
+          <Text style={[styles.button_text]}>Aceptar</Text>
+        </Button>
+      </YStack>
     </View>
   );
 };
 
 export default DataTreatmentSheet;
+
+const styles = StyleSheet.create({
+  ...shared,
+
+  container: {
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+  },
+
+  icon: {
+    width: 24,
+    height: 24,
+  },
+
+  title: {
+    fontSize: 16,
+    fontFamily: "Rajdhani-SemiBold",
+    color: "#666666",
+    paddingVertical: 12,
+    alignSelf: "center",
+  },
+});

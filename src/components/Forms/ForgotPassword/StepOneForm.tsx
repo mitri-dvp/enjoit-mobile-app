@@ -1,4 +1,4 @@
-import { Text, View, Button } from "tamagui";
+import { Text, View, Button, YStack } from "tamagui";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +9,7 @@ import { FPStepOneInputSchema, FPStepOneInputValues } from "src/schemas/auth";
 
 import { FPIdentifierType, FPStepType } from "src/models/zod/auth";
 
-import { styles } from "src/styles/ForgotPasswordStyles";
+import { styles } from "src/styles/shared";
 
 export default function StepOneForm({
   setStep,
@@ -51,18 +51,22 @@ export default function StepOneForm({
 
   return (
     <View>
-      <Text style={styles.title}>Recuperar contraseña</Text>
+      <YStack marginTop={48} gap={16}>
+        <Text style={styles.title}>Recuperar contraseña</Text>
 
-      <Text style={styles.subtitle}>
-        Introduce tu telefono o tu cuenta de correo electronico con la cual te
-        registraste.
-      </Text>
+        <Text style={styles.subtitle}>
+          Introduce tu telefono o tu cuenta de correo electronico con la cual te
+          registraste.
+        </Text>
+      </YStack>
 
-      <TextInputBase
-        inputId="phoneOrEmail"
-        placeholder={"Ingresa teléfono o email"}
-        control={control}
-      />
+      <YStack marginVertical={20}>
+        <TextInputBase
+          inputId="phoneOrEmail"
+          placeholder={"Ingresa teléfono o email"}
+          control={control}
+        />
+      </YStack>
 
       <Button
         {...styles.submit_button}

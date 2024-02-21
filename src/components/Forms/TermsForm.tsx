@@ -21,10 +21,11 @@ import DataTreatmentSheet from "src/components/Sheets/DataTreatmentSheet";
 
 import { TermsSchema, TermsValues } from "src/schemas/root";
 
-import { styles } from "src/styles/TermsStyles";
+import { styles as shared } from "src/styles/shared";
+import { StyleSheet } from "react-native";
 
 export default function TermsForm(props: { onSubmit: (data: any) => void }) {
-  const { control, handleSubmit, getValues, formState, setValue } = useForm({
+  const { control, handleSubmit, formState, setValue } = useForm({
     defaultValues: TermsValues,
     resolver: TermsSchema,
     mode: "all",
@@ -39,7 +40,6 @@ export default function TermsForm(props: { onSubmit: (data: any) => void }) {
 
   const toggleTermsSheet = () => {
     setShowTermsSheet(!showTermsSheet);
-    // router.push("/modals/test-modal");
   };
   const confirmTermsSheet = () => {
     setValue("acceptedTerms", true);
@@ -47,7 +47,6 @@ export default function TermsForm(props: { onSubmit: (data: any) => void }) {
   };
   const toggleDataTreatmentSheet = () => {
     setShowDataTreatmentSheet(!showDataTreatmentSheet);
-    // router.push("/modals/test-modal");
   };
   const confirmDataTreatmentSheet = () => {
     setValue("acceptedDataTreatment", true);
@@ -55,25 +54,13 @@ export default function TermsForm(props: { onSubmit: (data: any) => void }) {
   };
 
   return (
-    <View
-      style={{
-        paddingVertical: 16,
-        paddingHorizontal: 32,
-      }}
-    >
-      <Text
-        style={{
-          alignSelf: "center",
-          marginBottom: 16,
-          fontSize: 16,
-          fontFamily: "Rajdhani-SemiBold",
-          paddingVertical: 12,
-          color: "#666666",
-        }}
-      >
-        Términos y Condiciones
-      </Text>
+    <View style={styles.container}>
+      <YStack marginBottom={16}>
+        <Text style={styles.title}>Términos y Condiciones</Text>
+      </YStack>
+
       <Separator style={{ borderColor: "#D8D8D8" }} />
+
       <YStack marginVertical={32} gap={32}>
         <CheckboxInputBase
           control={control}
@@ -82,9 +69,8 @@ export default function TermsForm(props: { onSubmit: (data: any) => void }) {
             <>
               Yo acepto los{" "}
               <Text
-                style={{ fontFamily: styles.text.fontFamily }}
-                color={styles.text.color}
-                pressStyle={styles.text__press}
+                style={styles.touchable_text}
+                pressStyle={styles.touchable_text__press}
                 onPress={toggleTermsSheet}
               >
                 terminos y condiciones de Enjoit
@@ -99,9 +85,8 @@ export default function TermsForm(props: { onSubmit: (data: any) => void }) {
             <>
               Yo acepto y autorizo el{" "}
               <Text
-                style={{ fontFamily: styles.text.fontFamily }}
-                color={styles.text.color}
-                pressStyle={styles.text__press}
+                style={styles.touchable_text}
+                pressStyle={styles.touchable_text__press}
                 onPress={toggleDataTreatmentSheet}
               >
                 tratamiento de datos de Enjoit
@@ -110,6 +95,7 @@ export default function TermsForm(props: { onSubmit: (data: any) => void }) {
           }
         />
       </YStack>
+
       <Button
         {...styles.submit_button}
         pressStyle={styles.submit_button__press}
@@ -129,6 +115,7 @@ export default function TermsForm(props: { onSubmit: (data: any) => void }) {
       <SheetBase open={showTermsSheet} setOpen={setShowTermsSheet}>
         <TermsSheet onBack={toggleTermsSheet} onConfirm={confirmTermsSheet} />
       </SheetBase>
+
       <SheetBase
         open={showDataTreatmentSheet}
         setOpen={setShowDataTreatmentSheet}
@@ -141,3 +128,25 @@ export default function TermsForm(props: { onSubmit: (data: any) => void }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  ...shared,
+
+  container: {
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+  },
+
+  title: {
+    fontSize: 16,
+    fontFamily: "Rajdhani-SemiBold",
+    color: "#666666",
+    paddingVertical: 12,
+    alignSelf: "center",
+  },
+
+  touchable_text: {
+    ...shared.touchable_text,
+    fontFamily: "Rajdhani-SemiBold",
+  },
+});

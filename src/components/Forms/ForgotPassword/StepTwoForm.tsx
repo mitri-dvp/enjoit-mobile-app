@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
-import { Text, View, Button, Spinner } from "tamagui";
+import { Text, View, Button, Spinner, YStack } from "tamagui";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,7 +20,7 @@ import {
   validateFPConfirmationCode,
 } from "src/services/auth";
 
-import { styles } from "src/styles/ForgotPasswordStyles";
+import { styles } from "src/styles/shared";
 import { Alert } from "react-native";
 
 export default function StepTwoForm({
@@ -160,59 +160,64 @@ export default function StepTwoForm({
 
   return (
     <View>
-      <Text style={styles.title}>Código enviado</Text>
+      <YStack marginTop={48} gap={16}>
+        <Text style={styles.title}>Código enviado</Text>
 
-      <Text style={styles.subtitle}>{renderTitle()}</Text>
+        <Text style={styles.subtitle}>{renderTitle()}</Text>
+      </YStack>
 
-      <TextInputBase
-        inputId="confirmationCode"
-        labelText="Ingresa el código"
-        placeholder={"Ingresa el código"}
-        control={control}
-      />
+      <YStack marginVertical={20}>
+        <TextInputBase
+          inputId="confirmationCode"
+          labelText="Ingresa el código"
+          placeholder={"Ingresa el código"}
+          control={control}
+        />
+        {formState.errors.root?.server && (
+          <Text style={[styles.text, styles.text__error, { marginTop: 16 }]}>
+            {formState.errors.root.server.message}
+          </Text>
+        )}
+      </YStack>
 
-      {formState.errors.root?.server && (
-        <Text style={[styles.text, styles.text__error, { marginTop: 16 }]}>
-          {formState.errors.root.server.message}
-        </Text>
-      )}
-
-      <Button
-        {...styles.submit_button}
-        pressStyle={styles.submit_button__press}
-        style={[!formState.isValid && styles.submit_button__disabled]}
-        onPress={() => onSubmit()}
-        disabled={isPending}
-      >
-        {isPending ? (
-          <Spinner size="small" color="#BCBCBC" />
-        ) : (
+      <YStack gap={20}>
+        <Button
+          {...styles.submit_button}
+          pressStyle={styles.submit_button__press}
+          style={[!formState.isValid && styles.submit_button__disabled]}
+          onPress={() => onSubmit()}
+          disabled={isPending}
+        >
+          {isPending ? (
+            <Spinner size="small" color="#BCBCBC" />
+          ) : (
+            <Text
+              style={[
+                styles.button_text,
+                !formState.isValid && styles.button_text__disabled,
+              ]}
+            >
+              Ok
+            </Text>
+          )}
+        </Button>
+        <Button
+          {...styles.submit_button}
+          pressStyle={styles.submit_button__press}
+          style={[isCounting && styles.submit_button__disabled]}
+          disabled={isCounting}
+          onPress={handleRequestCode}
+        >
           <Text
             style={[
               styles.button_text,
-              !formState.isValid && styles.button_text__disabled,
+              isCounting && styles.button_text__disabled,
             ]}
           >
-            Ok
+            Solicitar código {isCounting && `(${count}s)`}
           </Text>
-        )}
-      </Button>
-      <Button
-        {...styles.submit_button}
-        pressStyle={styles.submit_button__press}
-        style={[isCounting && styles.submit_button__disabled]}
-        disabled={isCounting}
-        onPress={handleRequestCode}
-      >
-        <Text
-          style={[
-            styles.button_text,
-            isCounting && styles.button_text__disabled,
-          ]}
-        >
-          Solicitar código {isCounting && `(${count}s)`}
-        </Text>
-      </Button>
+        </Button>
+      </YStack>
     </View>
   );
 }
