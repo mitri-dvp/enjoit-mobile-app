@@ -82,19 +82,16 @@ export default function Root() {
             <Image
               source={require("src/assets/images/enjoit/logo.png")}
               contentFit="contain"
-              style={{ width: 136, height: 52 }}
+              style={styles.logo}
             />
           </View>
-          <View>
-            <TouchableOpacity onPress={goToRoute}>
-              {/* <Text style={styles.button_text}>Navegar</Text> */}
-            </TouchableOpacity>
 
+          <YStack>
             <Text style={styles.title}>
               {`Ordena, recoge, reserva\nlo que sea.`}
             </Text>
 
-            <View style={{ gap: 12 }}>
+            <YStack gap={12}>
               <Button
                 {...styles.email_button}
                 pressStyle={styles.email_button__press}
@@ -142,22 +139,17 @@ export default function Root() {
                 />
                 <Text style={styles.button_text}>Ingresar con Apple ID</Text>
               </Button>
-            </View>
-            <View
-              style={{
-                gap: 32,
-                marginTop: 48,
-                alignItems: "center",
-              }}
-            >
+            </YStack>
+
+            <YStack gap={32} marginTop={48}>
               <TouchableOpacity onPress={navigateToHomeAsGuest}>
-                <Text style={styles.button_text}>Ingresa como invitado</Text>
+                <Text style={styles.touchable_text}>Ingresa como invitado</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={navigateToLogin}>
-                <Text style={styles.button_text}>Ya tengo cuenta</Text>
+                <Text style={styles.touchable_text}>Ya tengo cuenta</Text>
               </TouchableOpacity>
-            </View>
-          </View>
+            </YStack>
+          </YStack>
         </View>
 
         <SheetBase open={open} setOpen={setOpen}>
@@ -183,6 +175,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "row",
   },
+  logo: {
+    width: 136,
+    height: 52,
+  },
+
   title: {
     marginTop: "35%",
     marginBottom: 16,
@@ -248,5 +245,11 @@ const styles = StyleSheet.create({
   button_text_2: {
     fontFamily: "RedHatText-SemiBold",
     color: "#D30101",
+  },
+
+  touchable_text: {
+    fontFamily: "RedHatText-SemiBold",
+    color: "#FFFFFF",
+    textAlign: "center",
   },
 });
