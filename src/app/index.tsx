@@ -1,56 +1,32 @@
-import { useEffect, useState } from "react";
-import { Alert, ImageBackground, StyleSheet, Platform } from "react-native";
+import { useState } from "react";
+import { ImageBackground, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 import Icon from "@expo/vector-icons/EvilIcons";
-import { useNavigation, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { Image } from "expo-image";
-import * as Location from "expo-location";
-import * as Notifications from "expo-notifications";
-import Constants from "expo-constants";
 
-import {
-  Button,
-  Checkbox,
-  Label,
-  Separator,
-  Text,
-  View,
-  XStack,
-  YStack,
-} from "tamagui";
+import { Button, Text, View, YStack } from "tamagui";
 
 import ScreenView from "src/components/ScreenView";
 import SheetBase from "src/components/Sheets/SheetBase";
 import TermsForm from "src/components/Forms/TermsForm";
+import LoginAsGuest from "src/components/LoginAsGuest";
 
 import { darken, lighten } from "src/utils/color";
-import {
-  allowedNotificationsAsync,
-  sendNotificationsAsync,
-} from "src/utils/notifications";
+import { allowedNotificationsAsync } from "src/utils/notifications";
 import { allowedLocationAsync } from "src/utils/location";
 
 import { useRootStore } from "src/store/root";
 
 export default function Root() {
   const rootStore = useRootStore();
-  const navigation = useNavigation();
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    navigation.setOptions({ headerShown: false });
-  }, [navigation]);
-
-  const goToRoute = () => {
-    router.push("/home/");
-  };
-
   const navigateToSignup = () => router.push("/signup");
   const navigateToLogin = () => router.push("/login");
-  const navigateToHomeAsGuest = () => router.push("/home/");
 
   const handleEmailPress = () => {
     if (rootStore.hasAccepted) return handleNavigateToSignup();
@@ -142,9 +118,13 @@ export default function Root() {
             </YStack>
 
             <YStack gap={32} marginTop={48}>
-              <TouchableOpacity onPress={navigateToHomeAsGuest}>
-                <Text style={styles.touchable_text}>Ingresa como invitado</Text>
-              </TouchableOpacity>
+              <LoginAsGuest>
+                <TouchableOpacity>
+                  <Text style={styles.touchable_text}>
+                    Ingresa como invitado
+                  </Text>
+                </TouchableOpacity>
+              </LoginAsGuest>
               <TouchableOpacity onPress={navigateToLogin}>
                 <Text style={styles.touchable_text}>Ya tengo cuenta</Text>
               </TouchableOpacity>

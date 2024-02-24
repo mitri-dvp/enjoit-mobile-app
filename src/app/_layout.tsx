@@ -81,7 +81,7 @@ function RootLayoutNav() {
         <ThemeProvider
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
-          <Stack />
+          <Stack screenOptions={{ headerShown: false }} />
         </ThemeProvider>
       </TamaguiProvider>
     </QueryClientProvider>

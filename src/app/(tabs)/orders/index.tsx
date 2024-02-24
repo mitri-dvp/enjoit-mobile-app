@@ -1,27 +1,25 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Platform, StatusBar } from "react-native";
 
 import { Image } from "expo-image";
 
-import { View } from "tamagui";
+import { Text, View } from "tamagui";
 
 import ScreenView from "src/components/ScreenView";
-import SignupForm from "src/components/Forms/SignupForm";
 
 import { styles as shared } from "src/styles/shared";
 
-export default function Signup() {
+export default function Orders() {
   return (
-    <ScreenView screenStyle={styles.screen} scrollViewStyle={styles.scrollView}>
+    <ScreenView screenStyle={styles.screen}>
       <View style={styles.container}>
         <View style={styles.logo_container}>
           <Image
-            source={require("src/assets/images/icon.png")}
+            source={require("src/assets/images/enjoit/logo-light.jpg")}
             contentFit="contain"
             style={styles.logo}
           />
         </View>
-
-        <SignupForm />
+        <Text style={[styles.text, { fontSize: 32 }]}>Pedidos</Text>
       </View>
     </ScreenView>
   );
@@ -29,15 +27,15 @@ export default function Signup() {
 
 const styles = StyleSheet.create({
   ...shared,
-
-  screen: { flex: 1 },
-  scrollView: { flex: 1 },
+  screen: {
+    marginTop: Platform.select({ android: StatusBar.currentHeight }),
+    backgroundColor: "rgb(255, 255, 255)",
+    flex: 1,
+  },
   container: {
     flex: 1,
-    minHeight: Dimensions.get("screen").height,
-    paddingVertical: 64,
+    paddingVertical: 8,
     paddingHorizontal: 32,
-    backgroundColor: "#FFFFFF",
   },
 
   logo_container: {
@@ -45,8 +43,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   logo: {
-    width: 128,
-    height: 128,
-    borderRadius: 24,
+    width: 136,
+    height: 52,
   },
 });

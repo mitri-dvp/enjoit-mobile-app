@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-
+import { useState } from "react";
 import { StyleSheet, Dimensions } from "react-native";
 
-import { useNavigation, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { Image } from "expo-image";
 
 import { View, Text, YStack } from "tamagui";
@@ -13,20 +12,16 @@ import ScreenView from "src/components/ScreenView";
 import LoginForm from "src/components/Forms/LoginForm";
 import SheetBase from "src/components/Sheets/SheetBase";
 import ForgotPasswordSheet from "src/components/Sheets/ForgotPasswordSheet";
+import LoginAsGuest from "src/components/LoginAsGuest";
+
 import { styles as shared } from "src/styles/shared";
 
 export default function Login() {
-  const navigation = useNavigation();
   const router = useRouter();
 
   const [showForgotPassword, setShowForgotPassword] = useState(false);
 
-  useEffect(() => {
-    navigation.setOptions({ headerShown: false });
-  }, [navigation]);
-
   const navigateToSignup = () => router.push("/signup");
-  const navigateToHomeAsGuest = () => router.push("/home/");
 
   const handleForgotPassword = () => {
     toggleForgotPasswordSheet();
@@ -56,9 +51,11 @@ export default function Login() {
           <TouchableOpacity onPress={navigateToSignup}>
             <Text style={styles.touchable_text}>Regístrate</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={navigateToHomeAsGuest}>
-            <Text style={styles.touchable_text}>Ingresa como invitado</Text>
-          </TouchableOpacity>
+          <LoginAsGuest>
+            <TouchableOpacity>
+              <Text style={styles.touchable_text}>Ingresa como invitado</Text>
+            </TouchableOpacity>
+          </LoginAsGuest>
         </YStack>
       </View>
 

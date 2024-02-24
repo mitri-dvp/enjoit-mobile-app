@@ -7,7 +7,7 @@ import {
 import type { User } from "src/models/zod";
 
 import { api } from "src/utils/http";
-import { removeAccessToken, saveAccessToken } from "src/utils/secureStore";
+import { accessTokenStore, deviceIdStore } from "src/utils/secureStore";
 
 import { useUserStore } from "src/store/user";
 
@@ -18,7 +18,7 @@ export const signupUser = async (payload: SignupModelType) => {
   );
 
   // Success
-  await saveAccessToken(res.data.accessToken);
+  await accessTokenStore.save(res.data.accessToken);
 
   api.defaults.headers.common[
     "Authorization"
@@ -34,7 +34,25 @@ export const loginUser = async (payload: LoginModelType) => {
   );
 
   // Success
-  await saveAccessToken(res.data.accessToken);
+  await accessTokenStore.save(res.data.accessToken);
+
+  api.defaults.headers.common[
+    "Authorization"
+  ] = `Bearer ${res.data.accessToken}`;
+
+  useUserStore.getState().signin(res.data.user);
+};
+
+export const loginAsGuest = async () => {
+  const deviceId = await deviceIdStore.get();
+
+  const res = await api.post<{ user: User; accessToken: string }>(
+    "/auth/guest",
+    { deviceId: deviceId }
+  );
+
+  // Success
+  await accessTokenStore.save(res.data.accessToken);
 
   api.defaults.headers.common[
     "Authorization"
@@ -44,7 +62,7 @@ export const loginUser = async (payload: LoginModelType) => {
 };
 
 export const logoutUser = async () => {
-  await removeAccessToken();
+  await accessTokenStore.remove();
 
   api.defaults.headers.common["Authorization"] = ``;
 

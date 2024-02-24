@@ -1,10 +1,11 @@
 import * as SecureStore from "expo-secure-store";
+import * as Crypto from "expo-crypto";
 
-import type { User } from "src/models/zod";
 type AccessToken = string;
+type DeviceId = string;
 
-const userKey = "user";
 const accessTokenKey = "access_token";
+const deviceIdKey = "device_id";
 
 const get = async <T>(key: string): Promise<T | null> => {
   const value = await SecureStore.getItemAsync(key);
@@ -19,7 +20,22 @@ const save = async <T>(key: string, value: T) => {
   return await SecureStore.setItemAsync(key, JSON.stringify(value));
 };
 
-export const getAccessToken = () => get<AccessToken>(accessTokenKey);
-export const removeAccessToken = () => remove(accessTokenKey);
-export const saveAccessToken = (payload: AccessToken) =>
-  save(accessTokenKey, payload);
+export const accessTokenStore = {
+  get: () => get<AccessToken>(accessTokenKey),
+  remove: () => remove(accessTokenKey),
+  save: (payload: AccessToken) => save(accessTokenKey, payload),
+};
+
+export const deviceIdStore = {
+  get: async () => {
+    const deviceId = await get<DeviceId>(deviceIdKey);
+    if (!deviceId) {
+      const newDeviceId = Crypto.randomUUID();
+      await deviceIdStore.save(newDeviceId);
+      return newDeviceId;
+    }
+    return deviceId;
+  },
+  remove: () => remove(deviceIdKey),
+  save: (payload: DeviceId) => save(deviceIdKey, payload),
+};

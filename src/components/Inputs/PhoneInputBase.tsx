@@ -6,7 +6,7 @@ import { Controller } from "react-hook-form";
 import { Control, FieldError } from "react-hook-form/dist/types";
 import { isValidPhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 
-const TextInputBase = (props: {
+const PhoneInputBase = (props: {
   labelText: string;
   inputId: string;
   placeholder: string;
@@ -120,7 +120,7 @@ const TextInputBase = (props: {
   );
 };
 
-export default TextInputBase;
+export default PhoneInputBase;
 
 const styles = StyleSheet.create({
   text: {
