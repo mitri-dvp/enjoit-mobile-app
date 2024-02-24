@@ -11,13 +11,15 @@ import { Button, Text, View, YStack } from "tamagui";
 import ScreenView from "src/components/ScreenView";
 import SheetBase from "src/components/Sheets/SheetBase";
 import TermsForm from "src/components/Forms/TermsForm";
-import LoginAsGuest from "src/components/LoginAsGuest";
+import LoginAsGuest from "src/components/Login/LoginAsGuest";
 
 import { darken, lighten } from "src/utils/color";
 import { allowedNotificationsAsync } from "src/utils/notifications";
 import { allowedLocationAsync } from "src/utils/location";
 
 import { useRootStore } from "src/store/root";
+import LoginFacebook from "src/components/Login/LoginFacebook";
+import LoginGoogle from "src/components/Login/LoginGoogle";
 
 export default function Root() {
   const rootStore = useRootStore();
@@ -81,29 +83,35 @@ export default function Root() {
                 />
                 <Text style={styles.button_text}>Ingresar con email</Text>
               </Button>
-              <Button
-                {...styles.facebook_button}
-                pressStyle={styles.facebook_button__press}
-              >
-                <Icon
-                  name="sc-facebook"
-                  size={36}
-                  style={styles.button_icon}
-                  color={"#FFFFFF"}
-                />
-                <Text style={styles.button_text}>Ingresar con Facebook</Text>
-              </Button>
-              <Button
-                {...styles.google_button}
-                pressStyle={styles.google_button__press}
-              >
-                <Image
-                  source={require("src/assets/svg/google.svg")}
-                  contentFit="contain"
-                  style={styles.button_image}
-                />
-                <Text style={styles.button_text_2}>Ingresar con Google</Text>
-              </Button>
+              <LoginFacebook>
+                <Button
+                  {...styles.facebook_button}
+                  pressStyle={styles.facebook_button__press}
+                >
+                  <Icon
+                    name="sc-facebook"
+                    size={36}
+                    style={styles.button_icon}
+                    color={"#FFFFFF"}
+                  />
+                  <Text style={styles.button_text}>Ingresar con Facebook</Text>
+                </Button>
+              </LoginFacebook>
+
+              <LoginGoogle>
+                <Button
+                  {...styles.google_button}
+                  pressStyle={styles.google_button__press}
+                >
+                  <Image
+                    source={require("src/assets/svg/google.svg")}
+                    contentFit="contain"
+                    style={styles.button_image}
+                  />
+                  <Text style={styles.button_text_2}>Ingresar con Google</Text>
+                </Button>
+              </LoginGoogle>
+
               <Button
                 {...styles.apple_button}
                 pressStyle={styles.apple_button__press}

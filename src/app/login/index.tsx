@@ -12,7 +12,7 @@ import ScreenView from "src/components/ScreenView";
 import LoginForm from "src/components/Forms/LoginForm";
 import SheetBase from "src/components/Sheets/SheetBase";
 import ForgotPasswordSheet from "src/components/Sheets/ForgotPasswordSheet";
-import LoginAsGuest from "src/components/LoginAsGuest";
+import LoginAsGuest from "src/components/Login/LoginAsGuest";
 
 import { styles as shared } from "src/styles/shared";
 

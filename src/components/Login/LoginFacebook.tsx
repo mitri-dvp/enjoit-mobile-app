@@ -2,25 +2,22 @@ import React from "react";
 import { Alert } from "react-native";
 import { useRouter } from "expo-router";
 
-import { loginAsGuest } from "src/services/auth";
-
-const LoginAsGuest = ({ children }: { children: React.ReactElement }) => {
+const LoginFacebook = ({ children }: { children: React.ReactElement }) => {
   const router = useRouter();
 
   const navigateToHomeAsGuest = () => router.push("/(tabs)/home/");
 
-  const handleNavigateToHomeAsGuest = async () => {
+  const handleLoginFacebook = async () => {
     try {
-      await loginAsGuest();
-      navigateToHomeAsGuest();
+      Alert.alert("Facebook Login WIP");
     } catch (error) {
       Alert.alert("Error Inesperado", "Algo occurió mal, intente otra vez");
     }
   };
 
   return React.cloneElement(children, {
-    onPress: handleNavigateToHomeAsGuest,
+    onPress: handleLoginFacebook,
   });
 };
 
-export default LoginAsGuest;
+export default LoginFacebook;
