@@ -48,13 +48,9 @@
       [
         "react-native-fbsdk-next",
         {
-          "appID": "113xxxxxxxxx",
-          "clientToken": "0073xxxxxxxx",
-          "displayName": "Enjoit",
-          "advertiserIDCollectionEnabled": false,
-          "autoLogAppEventsEnabled": false,
-          "isAutoInitEnabled": true,
-          "iosUserTrackingPermission": "This identifier will be used to deliver personalized ads to you."
+          "appID": "xxxxxxxx",
+          "clientToken": "xxxxxxxx",
+          "displayName": "Enjoit"
         }
       ],
       "@react-native-google-signin/google-signin"

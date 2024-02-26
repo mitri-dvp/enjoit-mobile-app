@@ -18,7 +18,7 @@
     <meta-data android:name="com.facebook.sdk.AdvertiserIDCollectionEnabled" android:value="false"/>
     <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
     <meta-data android:name="com.facebook.sdk.ApplicationName" android:value="Enjoit"/>
-    <meta-data android:name="com.facebook.sdk.AutoInitEnabled" android:value="true"/>
+    <meta-data android:name="com.facebook.sdk.AutoInitEnabled" android:value="false"/>
     <meta-data android:name="com.facebook.sdk.AutoLogAppEventsEnabled" android:value="false"/>
     <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
     <meta-data android:name="expo.modules.updates.ENABLED" android:value="false"/>
@@ -37,6 +37,7 @@
         <data android:scheme="myapp"/>
         <data android:scheme="com.mitri.dvp.enjoit"/>
         <data android:scheme="fb113xxxxxxxxx"/>
+        <data android:scheme="fbxxxxxxxx"/>
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>

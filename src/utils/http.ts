@@ -1,9 +1,8 @@
 import axios from "axios";
 import { accessTokenStore } from "./secureStore";
+import { env } from "./env";
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL;
-
-export const api = axios.create({ baseURL: API_URL });
+export const api = axios.create({ baseURL: env.EXPO_PUBLIC_API_URL });
 
 accessTokenStore.get().then((token) => {
   if (token) {
