@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "enjoit",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./src/assets/images/splash.png",
@@ -14,7 +14,9 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "com.mitri.dvp.enjoit",
       "supportsTablet": true,
+      "usesAppleSignIn": true,
       "config": {
         "usesNonExemptEncryption": false
       }
@@ -50,10 +52,16 @@
         {
           "appID": "xxxxxxxx",
           "clientToken": "xxxxxxxx",
-          "displayName": "Enjoit"
+          "scheme": "fbxxxxxxxx",
+          "displayName": "Enjoit",
+          "advertiserIDCollectionEnabled": false,
+          "autoLogAppEventsEnabled": false,
+          "isAutoInitEnabled": true,
+          "iosUserTrackingPermission": "This identifier will be used to deliver personalized ads to you."
         }
       ],
-      "@react-native-google-signin/google-signin"
+      "@react-native-google-signin/google-signin",
+      "expo-tracking-transparency"
     ],
     "experiments": {
       "typedRoutes": true,

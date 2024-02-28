@@ -2,6 +2,7 @@ import {
   LoginModelType,
   SignupModelType,
   FPIdentifierType,
+  SocialModelType,
 } from "src/models/zod/auth";
 
 import type { User } from "src/models/zod";
@@ -49,6 +50,22 @@ export const loginAsGuest = async () => {
   const res = await api.post<{ user: User; accessToken: string }>(
     "/auth/guest",
     { deviceId: deviceId }
+  );
+
+  // Success
+  await accessTokenStore.save(res.data.accessToken);
+
+  api.defaults.headers.common[
+    "Authorization"
+  ] = `Bearer ${res.data.accessToken}`;
+
+  useUserStore.getState().signin(res.data.user);
+};
+
+export const loginSocial = async (payload: SocialModelType) => {
+  const res = await api.post<{ user: User; accessToken: string }>(
+    `/auth/login-social`,
+    { accessToken: payload.accessToken, provider: payload.provider }
   );
 
   // Success
